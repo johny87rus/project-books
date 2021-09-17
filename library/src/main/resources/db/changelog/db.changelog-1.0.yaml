@@ -1,0 +1,92 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: emikhailov
+      comment: Create table Author
+      changes:
+      - createTable:
+          tableName: author
+          columns:
+          - column:
+              name: id
+              type: int
+              constraints:
+                primaryKey: true
+                nullable: false
+          - column:
+              name: firstname
+              type: varchar(50)
+              constraints:
+                nullable: false
+          - column:
+              name: lastname
+              type: varchar(50)
+              constraints:
+                nullable: false
+  - changeSet:
+      id: 2
+      author: emikhailov
+      comment: Create table Book
+      changes:
+        - createTable:
+            tableName: book
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: title
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 3
+      author: emikhailov
+      comment: Create table Book-Author
+      changes:
+        - createTable:
+            tableName: book_author
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: bookid
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: authorid
+                  type: int
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 4
+      author: emikhailov
+      comment: Create table ISBN
+      changes:
+        - createTable:
+            tableName: isbn
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: isbn
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: bookid
+                  type: int
+                  constraints:
+                    nullable: false
