@@ -51,12 +51,6 @@ databaseChangeLog:
             tableName: book_author
             columns:
               - column:
-                  name: id
-                  type: int
-                  constraints:
-                    primaryKey: true
-                    nullable: false
-              - column:
                   name: bookid
                   type: int
                   constraints:
@@ -90,3 +84,40 @@ databaseChangeLog:
                   type: int
                   constraints:
                     nullable: false
+  - changeSet:
+      id: 5
+      author: emikhailov
+      comment: Create Sequences for ISBN, Book, Author, BookAuthor
+      changes:
+        - createSequence:
+            sequenceName: book_seq
+            incrementBy: 1
+            cycle: false
+            maxValue: 1000000000
+            minValue: 1000
+        - createSequence:
+            sequenceName: author_seq
+            incrementBy: 1
+            cycle: false
+            maxValue: 1000000000
+            minValue: 1000
+        - createSequence:
+            sequenceName: isbn_seq
+            incrementBy: 1
+            cycle: false
+            maxValue: 1000000000
+            minValue: 1000
+  - changeSet:
+      id: 6
+      author: emikhailov
+      comment: Create Index for BookAuthor
+      changes:
+        - createIndex:
+            tableName: book_author
+            columns:
+              - column:
+                  name: bookid
+              - column:
+                  name: authorid
+            unique: true
+            indexName: K01_book_author
