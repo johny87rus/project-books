@@ -30,7 +30,7 @@ public class ISBN {
     private Long isbnNumber;
 
     @ManyToOne
-    @JoinColumn(name = "bookid", nullable = false)
+    @JoinColumn(name = "bookid")
     private Book book;
 
 
