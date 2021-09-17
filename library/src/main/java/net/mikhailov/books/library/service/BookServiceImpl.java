@@ -20,7 +20,7 @@ public class BookServiceImpl implements BookService{
     }
 
     @Override
-    public Book saveBook(BookDTO bookDTO) {
+    public BookDTO saveBook(BookDTO bookDTO) {
         Book book = new Book();
         book.setTitle(bookDTO.getTitle());
 
@@ -44,7 +44,7 @@ public class BookServiceImpl implements BookService{
             book.setIsbnList(isbnList);
         }
         book.setAuthors(authorList);
-
-        return bookRepository.save(book);
+        bookDTO.setId(bookRepository.save(book).getId());
+        return bookDTO;
     }
 }
