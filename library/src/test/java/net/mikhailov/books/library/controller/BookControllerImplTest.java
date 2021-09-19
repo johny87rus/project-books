@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import net.mikhailov.books.library.dto.BookDTO;
 import net.mikhailov.books.library.service.BookService;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -123,10 +124,16 @@ class BookControllerImplTest {
     void whenPostValidJSON() throws Exception {
         String jsonTestString = "{\"authorlist\":[{\"name\":\"TestName\",\"lastname\":\"TestLastName\"}],\"bookname\":\"TestBook\",\"id\":null,\"isbnlist\":[1234567890123]}";
 
+        BookDTO bookDTO = new BookDTO();
+        bookDTO.setId(1);
+        Mockito.when(bookService.saveBook(Mockito.any(BookDTO.class))).thenReturn(bookDTO);
+
         mockMvc.perform(MockMvcRequestBuilders.post("/books")
                         .content(jsonTestString)
                         .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string(org.hamcrest.Matchers.containsString("\"id\":1")));
     }
 
 }
