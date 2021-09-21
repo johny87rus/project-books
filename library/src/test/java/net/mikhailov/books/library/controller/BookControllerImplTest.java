@@ -44,7 +44,7 @@ class BookControllerImplTest {
 
     @Test
     void whenPostWithoutTitle() throws Exception {
-        String jsonTestString = "{\"authorlist\":[{\"name\":\"TestName\",\"lastname\":\"TestLastName\"}],\"bookname\":\"\",\"id\":null,\"isbnlist\":[1234567890123]}";
+        String jsonTestString = "{\"authorlist\":[{\"name\":\"TestName\",\"lastname\":\"TestLastName\"}],\"bookname\":\"\",\"id\":null,\"isbnlist\":[{\"isbn\":1234567890123}]}";
         mockMvc.perform(MockMvcRequestBuilders.post("/books")
                         .content(jsonTestString)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -66,7 +66,7 @@ class BookControllerImplTest {
 
     @Test
     void whenPostWithoutAuthors() throws Exception {
-        String jsonTestString = "{\"authorlist\":[],\"bookname\":\"bookTestName\",\"id\":null,\"isbnlist\":[1234567890123]}";
+        String jsonTestString = "{\"authorlist\":[],\"bookname\":\"bookTestName\",\"id\":null,\"isbnlist\":[{\"isbn\":1234567890123}]}";
         mockMvc.perform(MockMvcRequestBuilders.post("/books")
                         .content(jsonTestString)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -77,7 +77,7 @@ class BookControllerImplTest {
 
     @Test
     void whenPostWithoutAuthorName() throws Exception {
-        String jsonTestString = "{\"authorlist\":[{\"name\":\"\",\"lastname\":\"TestLastName\"}],\"bookname\":\"bookTestName\",\"id\":null,\"isbnlist\":[1234567890123]}";
+        String jsonTestString = "{\"authorlist\":[{\"name\":\"\",\"lastname\":\"TestLastName\"}],\"bookname\":\"bookTestName\",\"id\":null,\"isbnlist\":[{ \"isbn\":1234567890123 }]}";
         mockMvc.perform(MockMvcRequestBuilders.post("/books")
                         .content(jsonTestString)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -88,7 +88,7 @@ class BookControllerImplTest {
 
     @Test
     void whenPostWithoutAuthorLastName() throws Exception {
-        String jsonTestString = "{\"authorlist\":[{\"name\":\"Name\",\"lastname\":\"\"}],\"bookname\":\"bookTestName\",\"id\":null,\"isbnlist\":[1234567890123]}";
+        String jsonTestString = "{\"authorlist\":[{\"name\":\"Name\",\"lastname\":\"\"}],\"bookname\":\"bookTestName\",\"id\":null,\"isbnlist\":[{\"isbn\":1234567890123}]}";
         mockMvc.perform(MockMvcRequestBuilders.post("/books")
                         .content(jsonTestString)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -101,8 +101,10 @@ class BookControllerImplTest {
     void whenPostValidBookDTO() throws Exception {
         BookDTO bookDTO = new BookDTO();
         bookDTO.setTitle("TestBook");
-        List<Long> isbnList = new ArrayList<>(1);
-        isbnList.add(123_45678_90123L);
+        List<BookDTO.ISBNDTO> isbnList = new ArrayList<>(1);
+        BookDTO.ISBNDTO isbndto = new BookDTO.ISBNDTO();
+        isbndto.setIsbnNumber(123_45678_90123L);
+        isbnList.add(isbndto);
         bookDTO.setIsbnList(isbnList);
 
         List<BookDTO.AuthorDTO> authorDTOList = new ArrayList<>(1);
@@ -120,7 +122,7 @@ class BookControllerImplTest {
 
     @Test
     void whenPostValidJSON() throws Exception {
-        String jsonTestString = "{\"authorlist\":[{\"name\":\"TestName\",\"lastname\":\"TestLastName\"}],\"bookname\":\"TestBook\",\"id\":null,\"isbnlist\":[1234567890123]}";
+        String jsonTestString = "{\"authorlist\":[{\"name\":\"TestName\",\"lastname\":\"TestLastName\"}],\"bookname\":\"TestBook\",\"id\":null,\"isbnlist\":[{\"isbn\":1234567890123}]}";
 
         BookDTO bookDTO = new BookDTO();
         bookDTO.setId(1);
