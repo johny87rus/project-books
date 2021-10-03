@@ -22,12 +22,14 @@ public class BookControllerImpl implements BookController {
         this.bookService = bookService;
     }
 
+    @Override
     @PostMapping
     public ResponseEntity<BookDTO> saveBook(@Valid @RequestBody BookDTO bookDTO) {
         BookDTO book = bookService.saveBook(bookDTO);
         return new ResponseEntity<>(book, HttpStatus.OK);
     }
 
+    @Override
     @GetMapping
     public ResponseEntity<List<BookDTO>> getAllBook() {
         return new ResponseEntity<>(bookService.getAllBooks(), HttpStatus.OK);
