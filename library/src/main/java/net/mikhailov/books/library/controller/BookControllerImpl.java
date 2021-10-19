@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("books")
@@ -33,6 +34,13 @@ public class BookControllerImpl implements BookController {
     @GetMapping
     public ResponseEntity<List<BookDTO>> getAllBook() {
         return new ResponseEntity<>(bookService.getAllBooks(), HttpStatus.OK);
+    }
+
+    @Override
+    @PostMapping("/addByISBN")
+    public ResponseEntity<Void> addByISBN(@RequestBody Set<String> isbnSet) {
+        bookService.addByISBN(isbnSet);
+        return ResponseEntity.ok().build();
     }
 
 

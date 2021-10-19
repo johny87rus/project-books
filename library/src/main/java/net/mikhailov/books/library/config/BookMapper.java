@@ -3,7 +3,6 @@ package net.mikhailov.books.library.config;
 import net.mikhailov.books.library.dto.BookDTO;
 import net.mikhailov.books.library.model.Author;
 import net.mikhailov.books.library.model.Book;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -12,11 +11,6 @@ import java.util.Objects;
 
 @Component
 public class BookMapper {
-    ModelMapper modelMapper;
-
-    public BookMapper(ModelMapper modelMapper) {
-        this.modelMapper = modelMapper;
-    }
 
     public Book toEntity(BookDTO dto) {
         Book result = new Book();

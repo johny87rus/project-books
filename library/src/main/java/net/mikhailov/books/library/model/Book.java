@@ -27,7 +27,7 @@ public class Book {
     @Id
     @GeneratedValue(generator = SEQUENCE_NAME, strategy = GenerationType.SEQUENCE)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "title", nullable = false)
     private String title;

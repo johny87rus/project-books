@@ -17,7 +17,7 @@ class BookFindTest {
     private static final String URL = "https://www.bookfinder.com/search/?author=&title=&lang=en&new_used=*&destination=ru&currency=USD&mode=basic&st=sr&ac=qr&isbn=";
 
     @ParameterizedTest
-    @CsvFileSource(resources = "/findBookTest.csv", delimiter = ':', lineSeparator = "\n")
+    @CsvFileSource(resources = "/findBookTest.csv", delimiter = ':')
     void test(String input, String expected, String expectedDescription) throws IOException {
         Document document = Jsoup
                 .connect(URL+input)

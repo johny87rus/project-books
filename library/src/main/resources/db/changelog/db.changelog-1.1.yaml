@@ -10,3 +10,33 @@ databaseChangeLog:
                -  column:
                     name:  description
                     type:  varchar(2000)
+  - changeSet:
+      id: 8
+      author: emikhailov
+      comment: Create table ISBNQueue
+      changes:
+        - createTable:
+            tableName: isbnqueue
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: isbn
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 9
+      author: emikhailov
+      comment: Create Sequences for ISBNQueue
+      changes:
+        - createSequence:
+            sequenceName: isbnqueue_seq
+            incrementBy: 1
+            cycle: false
+            maxValue: 1000000000
+            minValue: 1000
