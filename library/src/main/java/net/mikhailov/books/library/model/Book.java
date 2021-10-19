@@ -12,7 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import java.util.List;
@@ -37,6 +36,6 @@ public class Book {
     @JoinTable(name = "book_author", joinColumns = @JoinColumn(name = "bookid"), inverseJoinColumns = @JoinColumn(name = "authorid"))
     List<Author> authors;
 
-    @OneToMany(mappedBy = "book", cascade = CascadeType.ALL)
-    List<ISBN> isbnList;
+    @Column(name = "isbn", nullable = false)
+    private Long isbn;
 }

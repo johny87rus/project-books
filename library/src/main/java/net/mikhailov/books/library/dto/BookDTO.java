@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -22,10 +24,11 @@ public class BookDTO {
     @JsonProperty("bookname")
     private String title;
 
-    @Valid
-    @NotEmpty
-    @JsonProperty("isbnlist")
-    private List<ISBNDTO> isbnList;
+    @NotNull
+    @JsonProperty("isbn")
+    @Min(1_000_000_000)
+    @Max(999_99999_99999L)
+    private Long isbn;
 
     @Valid
     @NotEmpty
@@ -44,17 +47,6 @@ public class BookDTO {
         @NotBlank
         @JsonProperty("lastname")
         private String authorLastName;
-    }
-
-    @Getter
-    @Setter
-    public static class ISBNDTO {
-        @JsonProperty("id")
-        private Integer id;
-
-        @NotNull
-        @JsonProperty("isbn")
-        private Long isbnNumber;
     }
 
 }

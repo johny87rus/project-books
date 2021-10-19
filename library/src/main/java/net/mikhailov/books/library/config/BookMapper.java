@@ -3,7 +3,6 @@ package net.mikhailov.books.library.config;
 import net.mikhailov.books.library.dto.BookDTO;
 import net.mikhailov.books.library.model.Author;
 import net.mikhailov.books.library.model.Book;
-import net.mikhailov.books.library.model.ISBN;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +24,7 @@ public class BookMapper {
             result.setId(dto.getId());
         }
         result.setTitle(dto.getTitle());
+        result.setIsbn(dto.getIsbn());
         if (Objects.nonNull(dto.getAuthorList())) {
             List<Author> authorList = new ArrayList<>(dto.getAuthorList().size());
             dto.getAuthorList().forEach(authorDTO -> {
@@ -36,19 +36,6 @@ public class BookMapper {
             });
             result.setAuthors(authorList);
         }
-        if (Objects.nonNull(dto.getIsbnList())) {
-            List<ISBN> isbnList = new ArrayList<>(dto.getIsbnList().size());
-            dto.getIsbnList().forEach(isbnDTO -> {
-                ISBN isbn = new ISBN();
-                if (Objects.nonNull(isbnDTO.getId())) {
-                    isbn.setId(isbnDTO.getId());
-                }
-                isbn.setIsbnNumber(isbnDTO.getIsbnNumber());
-                isbn.setBook(result);
-                isbnList.add(isbn);
-            });
-            result.setIsbnList(isbnList);
-        }
 
         return result;
     }
@@ -57,6 +44,7 @@ public class BookMapper {
         BookDTO result = new BookDTO();
         result.setId(entity.getId());
         result.setTitle(entity.getTitle());
+        result.setIsbn(entity.getIsbn());
         if (Objects.nonNull(entity.getAuthors())) {
             List<BookDTO.AuthorDTO> authorList = new ArrayList<>(entity.getAuthors().size());
             entity.getAuthors().forEach(author -> {
@@ -67,16 +55,6 @@ public class BookMapper {
                 authorList.add(authorDTO);
             });
             result.setAuthorList(authorList);
-        }
-        if (Objects.nonNull(entity.getIsbnList())) {
-            List<BookDTO.ISBNDTO> isbnList = new ArrayList<>(entity.getIsbnList().size());
-            entity.getIsbnList().forEach(isbn -> {
-                BookDTO.ISBNDTO isbnDTO = new BookDTO.ISBNDTO();
-                isbnDTO.setId(isbn.getId());
-                isbnDTO.setIsbnNumber(isbn.getIsbnNumber());
-                isbnList.add(isbnDTO);
-            });
-            result.setIsbnList(isbnList);
         }
 
         return result;

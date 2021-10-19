@@ -42,6 +42,11 @@ databaseChangeLog:
                   type: varchar(255)
                   constraints:
                     nullable: false
+              - column:
+                  name: isbn
+                  type: bigint
+                  constraints:
+                    nullable: false
   - changeSet:
       id: 3
       author: emikhailov
@@ -61,33 +66,9 @@ databaseChangeLog:
                   constraints:
                     nullable: false
   - changeSet:
-      id: 4
-      author: emikhailov
-      comment: Create table ISBN
-      changes:
-        - createTable:
-            tableName: isbn
-            columns:
-              - column:
-                  name: id
-                  type: int
-                  constraints:
-                    primaryKey: true
-                    nullable: false
-              - column:
-                  name: isbn
-                  type: bigint
-                  constraints:
-                    nullable: false
-              - column:
-                  name: bookid
-                  type: int
-                  constraints:
-                    nullable: false
-  - changeSet:
       id: 5
       author: emikhailov
-      comment: Create Sequences for ISBN, Book, Author, BookAuthor
+      comment: Create Sequences for Book, Author, BookAuthor
       changes:
         - createSequence:
             sequenceName: book_seq
@@ -97,12 +78,6 @@ databaseChangeLog:
             minValue: 1000
         - createSequence:
             sequenceName: author_seq
-            incrementBy: 1
-            cycle: false
-            maxValue: 1000000000
-            minValue: 1000
-        - createSequence:
-            sequenceName: isbn_seq
             incrementBy: 1
             cycle: false
             maxValue: 1000000000

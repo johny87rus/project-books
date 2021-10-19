@@ -55,13 +55,32 @@ class BookControllerImplTest {
 
     @Test
     void whenPostWithoutISBN() throws Exception {
-        String jsonTestString = "{\"authorlist\":[{\"name\":\"TestName\",\"lastname\":\"TestLastName\"}],\"bookname\":\"bookTestName\",\"id\":null,\"isbnlist\":[]}";
+        String jsonTestString = "{\"authorlist\":[{\"name\":\"TestName\",\"lastname\":\"TestLastName\"}],\"bookname\":\"bookTestName\",\"id\":null}";
         mockMvc.perform(MockMvcRequestBuilders.post("/books")
                         .content(jsonTestString)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().is4xxClientError())
-                .andExpect(content().json("{\"isbnList\":\"must not be empty\"}"));
+                .andExpect(content().json("{\"isbn\":\"must not be null\"}"));
+    }
+
+    @Test
+    void whenPostWithInvalidISBN() throws Exception {
+        String jsonTestString = "{\"authorlist\":[{\"name\":\"TestName\",\"lastname\":\"TestLastName\"}],\"bookname\":\"bookTestName\",\"id\":null, \"isbn\":12345}";
+        mockMvc.perform(MockMvcRequestBuilders.post("/books")
+                        .content(jsonTestString)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().is4xxClientError())
+                .andExpect(content().json("{\"isbn\":\"must be greater than or equal to 1000000000\"}"));
+
+        jsonTestString = "{\"authorlist\":[{\"name\":\"TestName\",\"lastname\":\"TestLastName\"}],\"bookname\":\"bookTestName\",\"id\":null, \"isbn\":12345678901234}";
+        mockMvc.perform(MockMvcRequestBuilders.post("/books")
+                        .content(jsonTestString)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().is4xxClientError())
+                .andExpect(content().json("{\"isbn\":\"must be less than or equal to 9999999999999\"}"));
     }
 
     @Test
@@ -101,11 +120,7 @@ class BookControllerImplTest {
     void whenPostValidBookDTO() throws Exception {
         BookDTO bookDTO = new BookDTO();
         bookDTO.setTitle("TestBook");
-        List<BookDTO.ISBNDTO> isbnList = new ArrayList<>(1);
-        BookDTO.ISBNDTO isbndto = new BookDTO.ISBNDTO();
-        isbndto.setIsbnNumber(123_45678_90123L);
-        isbnList.add(isbndto);
-        bookDTO.setIsbnList(isbnList);
+        bookDTO.setIsbn(123_45678_90123L);
 
         List<BookDTO.AuthorDTO> authorDTOList = new ArrayList<>(1);
         BookDTO.AuthorDTO authorDTO = new BookDTO.AuthorDTO();
@@ -122,7 +137,7 @@ class BookControllerImplTest {
 
     @Test
     void whenPostValidJSON() throws Exception {
-        String jsonTestString = "{\"authorlist\":[{\"name\":\"TestName\",\"lastname\":\"TestLastName\"}],\"bookname\":\"TestBook\",\"id\":null,\"isbnlist\":[{\"isbn\":1234567890123}]}";
+        String jsonTestString = "{\"authorlist\":[{\"name\":\"TestName\",\"lastname\":\"TestLastName\"}],\"bookname\":\"TestBook\",\"id\":null,\"isbn\":1234567890123}";
 
         BookDTO bookDTO = new BookDTO();
         bookDTO.setId(1);

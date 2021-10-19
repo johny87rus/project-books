@@ -20,7 +20,7 @@ class BookServiceImplIntegrationTest {
 
     @Test
     void whenPostValidJSON() throws Exception {
-        String jsonTestString = "{\"authorlist\":[{\"name\":\"TestName\",\"lastname\":\"TestLastName\"}],\"bookname\":\"TestBook\",\"id\":null,\"isbnlist\":[{\"isbn\":1234567890123}]}";
+        String jsonTestString = "{\"authorlist\":[{\"name\":\"TestName\",\"lastname\":\"TestLastName\"}],\"bookname\":\"TestBook\",\"id\":null,\"isbn\":1234567890123}";
 
 
         mockMvc.perform(MockMvcRequestBuilders.post("/books")
