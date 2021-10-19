@@ -14,6 +14,7 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
@@ -40,5 +41,6 @@ public class Book {
     private Long isbn;
 
     @Column(name = "description", nullable = false)
+    @Size(max = 1000)
     private String description;
 }

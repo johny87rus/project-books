@@ -1,4 +1,4 @@
-package net.mikhailov.books.library;
+package net.mikhailov.books.library.service;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -14,17 +14,17 @@ import java.util.Objects;
  * @author Evgenii Mikhailov
  */
 class BookFindTest {
-    private static final String URL = "https://www.bookfinder.com/search/?author=&title=&lang=en&new_used=*&destination=ru&currency=USD&mode=basic&st=sr&ac=qr&isbn=";
-
     @ParameterizedTest
     @CsvFileSource(resources = "/findBookTest.csv", delimiter = ':')
-    void test(String input, String expected, String expectedDescription) throws IOException {
+    void test(String input, String expectedAuthor, String expectedLang, String expectedTitle, String expectedDescription) throws IOException {
         Document document = Jsoup
-                .connect(URL+input)
+                .connect(BookFinderImpl.URL +input)
                 .method(Connection.Method.GET).get();
-        Assertions.assertEquals(expected, document.select("#describe-isbn-title").text(), () -> "Название книги не соответствует ISBN");
+        Assertions.assertEquals(expectedTitle, document.select("#describe-isbn-title").text(), () -> "Название книги не соответствует ISBN");
         if (Objects.nonNull(expectedDescription)) {
             Assertions.assertEquals(expectedDescription, document.select("#bookSummary").text(), () -> "Description не соответствует ISBN");
         }
+        Assertions.assertEquals(expectedAuthor, document.select("span[itemprop=\"author\"]").text());
+        Assertions.assertEquals(expectedLang, document.select("span[itemprop=\"inLanguage\"]").text());
     }
 }

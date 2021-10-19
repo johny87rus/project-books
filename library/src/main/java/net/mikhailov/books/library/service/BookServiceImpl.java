@@ -18,11 +18,14 @@ public class BookServiceImpl implements BookService{
     BookRepository bookRepository;
     ISBNQueueRepository isbnQueueRepository;
     BookMapper bookMapper;
+    BookFinder bookFinder;
 
-    public BookServiceImpl(BookRepository bookRepository, BookMapper bookMapper, ISBNQueueRepository isbnQueueRepository) {
+
+    public BookServiceImpl(BookRepository bookRepository, BookMapper bookMapper, ISBNQueueRepository isbnQueueRepository, BookFinder bookFinder) {
         this.bookRepository = bookRepository;
         this.bookMapper = bookMapper;
         this.isbnQueueRepository = isbnQueueRepository;
+        this.bookFinder = bookFinder;
     }
 
     @Override
@@ -48,6 +51,7 @@ public class BookServiceImpl implements BookService{
             isbnQueues.add(isbnQueue);
         }
         isbnQueueRepository.saveAll(isbnQueues);
+        bookFinder.enrichBooks();
     }
 
 }
