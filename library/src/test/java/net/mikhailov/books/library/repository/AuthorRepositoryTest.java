@@ -1,24 +1,28 @@
 package net.mikhailov.books.library.repository;
 
 import net.mikhailov.books.library.model.Author;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 /**
  * @author Evgenii Mikhailov
  */
-public class AuthorRepositoryTest extends PostgreContainerTest {
+class AuthorRepositoryTest extends PostgreContainerTest {
 
     @Autowired
     AuthorRepository authorRepository;
 
     @Test
-    public void test() {
+    void shouldSaveAuthorAndReturnId() {
         Author author = new Author();
         author.setFirstname("TestName");
         author.setLastname("TestLastName");
         authorRepository.save(author);
-        Assert.assertNotNull(author.getId());
+        assertNotNull(author.getId());
+        assertTrue(author.getId() >= 1000, () -> "ID должен быть не менее 1000 из-за настроек sequence");
     }
 }
