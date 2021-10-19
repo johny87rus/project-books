@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: 7
+      author: emikhailov
+      comment: add column book.description
+      changes:
+        -  addColumn:
+             tableName:  book
+             columns:
+               -  column:
+                    name:  description
+                    type:  varchar(2000)

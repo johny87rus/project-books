@@ -49,4 +49,8 @@ public class BookDTO {
         private String authorLastName;
     }
 
+    @NotBlank
+    @JsonProperty("description")
+    private String description;
+
 }

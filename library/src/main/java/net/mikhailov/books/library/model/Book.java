@@ -38,4 +38,7 @@ public class Book {
 
     @Column(name = "isbn", nullable = false)
     private Long isbn;
+
+    @Column(name = "description", nullable = false)
+    private String description;
 }

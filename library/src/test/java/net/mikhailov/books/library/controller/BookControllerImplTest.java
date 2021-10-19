@@ -128,7 +128,7 @@ class BookControllerImplTest {
         authorDTO.setAuthorLastName("TestLastName");
         authorDTOList.add(authorDTO);
         bookDTO.setAuthorList(authorDTOList);
-
+        bookDTO.setDescription("TestDesc");
         mockMvc.perform(MockMvcRequestBuilders.post("/books")
                         .content(objectMapper.writeValueAsString(bookDTO))
                         .contentType(MediaType.APPLICATION_JSON))
@@ -137,7 +137,7 @@ class BookControllerImplTest {
 
     @Test
     void whenPostValidJSON() throws Exception {
-        String jsonTestString = "{\"authorlist\":[{\"name\":\"TestName\",\"lastname\":\"TestLastName\"}],\"bookname\":\"TestBook\",\"id\":null,\"isbn\":1234567890123}";
+        String jsonTestString = "{\"authorlist\":[{\"name\":\"TestName\",\"lastname\":\"TestLastName\"}],\"bookname\":\"TestBook\",\"id\":null,\"isbn\":1234567890123, \"description\":\"TestDescription\"}";
 
         BookDTO bookDTO = new BookDTO();
         bookDTO.setId(1);
