@@ -19,6 +19,7 @@ public class BookMapper {
         }
         result.setTitle(dto.getTitle());
         result.setIsbn(dto.getIsbn());
+        result.setDescription(dto.getDescription());
         if (Objects.nonNull(dto.getAuthorList())) {
             List<Author> authorList = new ArrayList<>(dto.getAuthorList().size());
             dto.getAuthorList().forEach(authorDTO -> {
@@ -39,6 +40,7 @@ public class BookMapper {
         result.setId(entity.getId());
         result.setTitle(entity.getTitle());
         result.setIsbn(entity.getIsbn());
+        result.setDescription(entity.getDescription());
         if (Objects.nonNull(entity.getAuthors())) {
             List<BookDTO.AuthorDTO> authorList = new ArrayList<>(entity.getAuthors().size());
             entity.getAuthors().forEach(author -> {

@@ -19,6 +19,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @author Mikhailov Evgenii
@@ -33,6 +34,8 @@ public class BookFinderImpl implements BookFinder {
     AuthorRepository authorRepository;
     IsbnConverter isbnConverter;
 
+    private final ReentrantLock reentrantLock = new ReentrantLock();
+
 
     public BookFinderImpl(BookRepository bookRepository, ISBNQueueRepository isbnQueueRepository, AuthorRepository authorRepository, IsbnConverter isbnConverter) {
         this.bookRepository = bookRepository;
@@ -44,13 +47,18 @@ public class BookFinderImpl implements BookFinder {
     @Override
     @Async
     public void enrichBooks() {
-        Iterator<ISBNQueue> iterator = isbnQueueRepository.findAll().iterator();
-        List<Book> bookList = new LinkedList<>();
-        while (iterator.hasNext()) {
-            ISBNQueue isbnQueue = iterator.next();
-            processIsbn(bookList, isbnQueue);
+        try {
+            reentrantLock.lock();
+            Iterator<ISBNQueue> iterator = isbnQueueRepository.findAll().iterator();
+            List<Book> bookList = new LinkedList<>();
+            while (iterator.hasNext()) {
+                ISBNQueue isbnQueue = iterator.next();
+                processIsbn(bookList, isbnQueue);
+            }
+            bookRepository.saveAll(bookList);
+        } finally {
+            reentrantLock.unlock();
         }
-        bookRepository.saveAll(bookList);
     }
 
     private void processIsbn(List<Book> bookList, ISBNQueue isbnQueue) {
@@ -73,7 +81,6 @@ public class BookFinderImpl implements BookFinder {
             return;
         }
         String desc = document.select("#bookSummary").text();
-        desc = desc.length() > 1000 ? desc.substring(0, 1000) : desc;
         Book book = new Book();
         book.setTitle(title);
         book.setDescription(desc);
