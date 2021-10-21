@@ -6,6 +6,7 @@ import net.mikhailov.books.library.repository.AuthorRepository;
 import net.mikhailov.books.library.repository.BookRepository;
 import net.mikhailov.books.library.repository.ISBNQueueRepository;
 import net.mikhailov.books.library.repository.PostgreContainerTest;
+import net.mikhailov.books.library.service.providers.BookProvider;
 import net.mikhailov.books.library.util.IsbnConverter;
 import org.hamcrest.text.IsEqualIgnoringCase;
 import org.junit.jupiter.api.Assertions;
@@ -15,6 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.transaction.Transactional;
 import java.util.Iterator;
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -34,12 +36,15 @@ class BookFinderTest extends PostgreContainerTest {
     @Autowired
     IsbnConverter isbnConverter;
 
+    @Autowired
+    List<BookProvider> bookProviderList;
+
 
     @Test
     @Transactional
     void shouldEnrichBook() {
         //Prepare
-        BookFinder bookFinder = new BookFinderImpl(bookRepository, isbnQueueRepository, authorRepository, isbnConverter);
+        BookFinder bookFinder = new BookFinderImpl(bookRepository, isbnQueueRepository, authorRepository, isbnConverter, bookProviderList);
         prepare();
 
 

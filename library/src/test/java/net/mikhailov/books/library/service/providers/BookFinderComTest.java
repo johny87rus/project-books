@@ -1,4 +1,4 @@
-package net.mikhailov.books.library.service;
+package net.mikhailov.books.library.service.providers;
 
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -13,12 +13,12 @@ import java.util.Objects;
 /**
  * @author Evgenii Mikhailov
  */
-class BookFindTest {
+class BookFinderComTest {
     @ParameterizedTest
     @CsvFileSource(resources = "/findBookTest.csv", delimiter = ':')
     void test(String input, String expectedAuthor, String expectedLang, String expectedTitle, String expectedDescription) throws IOException {
         Document document = Jsoup
-                .connect(BookFinderImpl.URL +input)
+                .connect(BookFinderCom.URL +input)
                 .method(Connection.Method.GET).get();
         Assertions.assertEquals(expectedTitle, document.select("#describe-isbn-title").text(), () -> "Название книги не соответствует ISBN");
         if (Objects.nonNull(expectedDescription)) {
