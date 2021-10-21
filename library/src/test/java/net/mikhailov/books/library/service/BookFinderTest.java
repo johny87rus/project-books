@@ -16,7 +16,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.transaction.Transactional;
 import java.util.Iterator;
-import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -37,14 +36,14 @@ class BookFinderTest extends PostgreContainerTest {
     IsbnConverter isbnConverter;
 
     @Autowired
-    List<BookProvider> bookProviderList;
+    BookProvider bookProvider;
 
 
     @Test
     @Transactional
     void shouldEnrichBook() {
         //Prepare
-        BookFinder bookFinder = new BookFinderImpl(bookRepository, isbnQueueRepository, authorRepository, isbnConverter, bookProviderList);
+        BookFinder bookFinder = new BookFinderImpl(bookRepository, isbnQueueRepository, authorRepository, isbnConverter, bookProvider);
         prepare();
 
 

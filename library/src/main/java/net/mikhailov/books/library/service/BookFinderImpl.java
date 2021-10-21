@@ -14,7 +14,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
@@ -28,17 +27,17 @@ public class BookFinderImpl implements BookFinder {
     AuthorRepository authorRepository;
     IsbnConverter isbnConverter;
 
-    List<BookProvider> bookProviders;
+    BookProvider bookProvider;
 
     private final ReentrantLock reentrantLock = new ReentrantLock();
 
 
-    public BookFinderImpl(BookRepository bookRepository, ISBNQueueRepository isbnQueueRepository, AuthorRepository authorRepository, IsbnConverter isbnConverter, List<BookProvider> bookProviders) {
+    public BookFinderImpl(BookRepository bookRepository, ISBNQueueRepository isbnQueueRepository, AuthorRepository authorRepository, IsbnConverter isbnConverter, BookProvider bookProvider) {
         this.bookRepository = bookRepository;
         this.isbnQueueRepository = isbnQueueRepository;
         this.authorRepository = authorRepository;
         this.isbnConverter = isbnConverter;
-        this.bookProviders = bookProviders;
+        this.bookProvider = bookProvider;
     }
 
     @Override
@@ -63,14 +62,9 @@ public class BookFinderImpl implements BookFinder {
         if (Boolean.TRUE.equals(Objects.isNull(isbn) || bookRepository.existsBookByIsbn(isbn)) || bookList.stream().anyMatch(it -> it.getIsbn().equals(isbn))) {
             return;
         }
-        for (BookProvider bookProvider : bookProviders) {
-            Optional<Book> book = bookProvider.getBook(isbn);
-            if (book.isPresent()) {
-                bookList.add(book.get());
-                isbnQueueRepository.delete(isbnQueue);
-                return;
-            }
-        }
-        isbnQueueRepository.delete(isbnQueue);
+        bookProvider.getBook(isbn).ifPresentOrElse(book -> {
+            bookList.add(book);
+            isbnQueueRepository.delete(isbnQueue);
+        }, () -> isbnQueueRepository.delete(isbnQueue));
     }
 }

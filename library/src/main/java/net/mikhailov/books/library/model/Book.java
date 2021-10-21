@@ -39,6 +39,9 @@ public class Book {
     @Column(name = "isbn", nullable = false)
     private Long isbn;
 
-    @Column(name = "description", nullable = false)
+    @Column(name = "description")
     private String description;
+
+    @Column(name = "imageurl")
+    private String imageurl;
 }
