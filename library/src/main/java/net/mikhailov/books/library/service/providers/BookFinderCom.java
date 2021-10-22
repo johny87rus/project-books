@@ -7,7 +7,6 @@ import net.mikhailov.books.library.repository.AuthorRepository;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -20,7 +19,6 @@ import java.util.Optional;
  */
 @Slf4j
 @Service
-@Primary
 public class BookFinderCom implements BookProvider{
     static final String URL = "https://www.bookfinder.com/search/?author=&title=&lang=en&new_used=*&destination=ru&currency=USD&mode=basic&st=sr&ac=qr&isbn=";
 

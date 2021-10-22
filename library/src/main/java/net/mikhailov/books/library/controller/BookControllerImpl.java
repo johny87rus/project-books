@@ -1,7 +1,11 @@
 package net.mikhailov.books.library.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.SneakyThrows;
 import net.mikhailov.books.library.dto.BookDTO;
 import net.mikhailov.books.library.service.BookService;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -22,6 +28,9 @@ public class BookControllerImpl implements BookController {
     public BookControllerImpl(BookService bookService) {
         this.bookService = bookService;
     }
+
+    @Value("classpath:isbndb.json")
+    Resource resourceFile;
 
     @Override
     @PostMapping
@@ -42,6 +51,17 @@ public class BookControllerImpl implements BookController {
         bookService.addByISBN(isbnSet);
         return ResponseEntity.ok().build();
     }
+
+    @SneakyThrows
+    @PostMapping("/initialize")
+    @Override
+    public ResponseEntity<Void> initialize() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String[] strings = objectMapper.readValue(resourceFile.getInputStream(), String[].class);
+        addByISBN(new HashSet<>(Arrays.asList(strings)));
+        return ResponseEntity.ok().build();
+    }
+
 
 
 }

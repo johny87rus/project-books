@@ -10,4 +10,5 @@ public interface BookController {
     ResponseEntity<BookDTO> saveBook(BookDTO bookDTO);
     ResponseEntity<List<BookDTO>> getAllBook();
     ResponseEntity<Void> addByISBN(Set<String> isbnSet);
+    ResponseEntity<Void> initialize();
 }
