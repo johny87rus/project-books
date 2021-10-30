@@ -25,18 +25,16 @@ public class BookFinderImpl implements BookFinder {
     BookRepository bookRepository;
     ISBNQueueRepository isbnQueueRepository;
     AuthorRepository authorRepository;
-    IsbnConverter isbnConverter;
 
     BookProvider bookProvider;
 
     private final ReentrantLock reentrantLock = new ReentrantLock();
 
 
-    public BookFinderImpl(BookRepository bookRepository, ISBNQueueRepository isbnQueueRepository, AuthorRepository authorRepository, IsbnConverter isbnConverter, BookProvider bookProvider) {
+    public BookFinderImpl(BookRepository bookRepository, ISBNQueueRepository isbnQueueRepository, AuthorRepository authorRepository, BookProvider bookProvider) {
         this.bookRepository = bookRepository;
         this.isbnQueueRepository = isbnQueueRepository;
         this.authorRepository = authorRepository;
-        this.isbnConverter = isbnConverter;
         this.bookProvider = bookProvider;
     }
 
@@ -58,7 +56,7 @@ public class BookFinderImpl implements BookFinder {
     }
 
     private void processIsbn(List<Book> bookList, ISBNQueue isbnQueue) {
-        Long isbn = isbnConverter.convertFromString(isbnQueue.getIsbn());
+        Long isbn = IsbnConverter.convertFromString(isbnQueue.getIsbn());
         if (Boolean.TRUE.equals(Objects.isNull(isbn) || bookRepository.existsBookByIsbn(isbn)) || bookList.stream().anyMatch(it -> it.getIsbn().equals(isbn))) {
             return;
         }

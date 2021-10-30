@@ -4,6 +4,7 @@ import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -11,6 +12,7 @@ import java.io.IOException;
 /**
  * @author Evgenii Mikhailov
  */
+@Disabled("Не работает без apiKey amazon")
 class AmazonComTest {
     @Test
     void test() throws IOException {

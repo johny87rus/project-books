@@ -1,57 +1,38 @@
 package net.mikhailov.books.library.service;
 
-import net.mikhailov.books.library.config.BookMapper;
-import net.mikhailov.books.library.dto.BookDTO;
-import net.mikhailov.books.library.model.Book;
-import net.mikhailov.books.library.model.ISBNQueue;
+import lombok.AllArgsConstructor;
+import net.mikhailov.books.library.mapper.BookMapper;
+import net.mikhailov.books.library.mapper.IdMapper;
 import net.mikhailov.books.library.repository.BookRepository;
-import net.mikhailov.books.library.repository.ISBNQueueRepository;
+import net.mikhailov.books.model.BookDTO;
+import net.mikhailov.books.model.IdDTO;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
+@AllArgsConstructor
 public class BookServiceImpl implements BookService{
-    BookRepository bookRepository;
-    ISBNQueueRepository isbnQueueRepository;
-    BookMapper bookMapper;
-    BookFinder bookFinder;
+    private final BookMapper bookMapper;
+    private final IdMapper idMapper;
+    private final BookRepository bookRepository;
 
 
-    public BookServiceImpl(BookRepository bookRepository, BookMapper bookMapper, ISBNQueueRepository isbnQueueRepository, BookFinder bookFinder) {
-        this.bookRepository = bookRepository;
-        this.bookMapper = bookMapper;
-        this.isbnQueueRepository = isbnQueueRepository;
-        this.bookFinder = bookFinder;
-    }
-
-    @Override
-    public BookDTO saveBook(BookDTO bookDTO) {
-        bookDTO.setId(bookRepository.save(bookMapper.toEntity(bookDTO)).getId());
-        return bookDTO;
-    }
 
     @Override
     public List<BookDTO> getAllBooks() {
-        Iterable<Book> allBooks = bookRepository.findAll();
-        List<BookDTO> result = new LinkedList<>();
-        allBooks.forEach(book -> result.add(bookMapper.toDto(book)));
-        return result;
+        return bookRepository.findAllBy().stream().map(bookMapper::bookToBookDTO).collect(Collectors.toList());
     }
 
     @Override
-    public void addByISBN(Set<String> isbnSet) {
-        Set<ISBNQueue> isbnQueues = new HashSet<>(isbnSet.size());
-        for (String isbn : isbnSet) {
-            ISBNQueue isbnQueue = new ISBNQueue();
-            isbnQueue.setIsbn(isbn);
-            isbnQueues.add(isbnQueue);
+    public IdDTO postBook(BookDTO bookDTO) {
+        if (bookRepository.existsBookByIsbn(bookDTO.getIsbn().longValue())) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT, "Book with same isbn found");
         }
-        isbnQueueRepository.saveAll(isbnQueues);
-        bookFinder.enrichBooks();
+        return idMapper.bookToIdDTO(bookRepository.save(bookMapper.bookDTOtoBook(bookDTO)));
     }
-
 }

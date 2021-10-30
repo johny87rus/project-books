@@ -20,7 +20,7 @@ public class GoogleApiProvider implements BookProvider {
     static final String URL = "https://www.googleapis.com/books/v1/volumes?q=";
     static final String KEY = "&key=";
 
-    @Value( "${google.api.key}" )
+    @Value( "${google.api.key:empty}" )
     private String googleApiKey;
 
     @Override

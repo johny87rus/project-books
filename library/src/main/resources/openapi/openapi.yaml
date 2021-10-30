@@ -1,0 +1,151 @@
+openapi: 3.0.3
+info:
+  version: 1.0.0
+  title: Library
+  description: Library Microservice API
+  contact:
+    name: Evgenii Mikhailov
+    url: https://mikhailov.net
+    email: evgenii@mikhailov.net
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  - description: main
+    url: https://library.mikhailov.net
+  - description: localhost
+    url: http://localhost:8080
+paths:
+  /books:
+    get:
+      operationId: getAllBooks
+      summary: Получить список книг
+      tags:
+        - Книги
+      responses:
+        '200':
+          description: Список книг
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BookListResponse'
+    post:
+      operationId: postBook
+      summary: Добавить книгу
+      tags:
+        - Книги
+      requestBody:
+        description: Данные создания Книги
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookDTO"
+      responses:
+        '200':
+          description: Книга добавлена
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdDTO'
+        '409':
+          description: Книга с таким ISBN уже существует
+  /authors:
+    get:
+      operationId: getAllAuthors
+      summary: Получить список авторов
+      tags:
+        - Авторы
+      responses:
+        '200':
+          description: Список авторов
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthorListResponse'
+    post:
+      operationId: postAuthor
+      summary: Добавить автора
+      tags:
+        - Авторы
+      requestBody:
+        description: Данные создания Автора
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AuthorDTO"
+      responses:
+        '200':
+          description: Автор добавлен
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IdDTO'
+        '409':
+          description: Автор уже существует
+components:
+  schemas:
+    IdDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+          example: 1
+    AuthorListResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/AuthorDTO'
+    AuthorDTO:
+      type: object
+      required:
+        - name
+        - surname
+      properties:
+        id:
+          type: integer
+          format: int32
+          example: 1
+        name:
+          type: string
+          example: Joshua
+        surname:
+          type: string
+          example: Bloch
+    BookListResponse:
+      type: array
+      items:
+        $ref: '#/components/schemas/BookDTO'
+    BookDTO:
+      type: object
+      required:
+        - title
+        - isbn
+        - authors
+      properties:
+        id:
+          readOnly: true
+          type: integer
+          format: int32
+          example: 1
+        title:
+          type: string
+          example: Spring boot in action
+        isbn:
+          type: number
+          minLength: 10
+          maxLength: 13
+          example: 1617292540
+        authors:
+          type: array
+          items:
+            $ref: '#/components/schemas/AuthorDTO'
+        description:
+          type: string
+          example: lorem ipsum
+        imageurl:
+            type: string
+            format: regex
+            pattern: https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)
+            example: http://ya.ru/jpg.jpg
