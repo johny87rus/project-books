@@ -107,6 +107,7 @@ components:
           type: integer
           format: int32
           example: 1
+          readOnly: true
         name:
           type: string
           example: Joshua
