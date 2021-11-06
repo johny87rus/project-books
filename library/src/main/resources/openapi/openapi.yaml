@@ -50,6 +50,28 @@ paths:
                 $ref: '#/components/schemas/IdDTO'
         '409':
           description: Книга с таким ISBN уже существует
+  /books/init:
+    post:
+      operationId: initBooks
+      summary: Ициниализировать БД из публичных источников, передается список ISBN
+      tags:
+        - Книги
+      requestBody:
+        description: Список ISBN
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ISBNList"
+      responses:
+        '200':
+          description: Запрос на инициализацию успешно обработан
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ISBNResultList'
+        '500':
+          description: Произошла непредвиденная ошибка
   /authors:
     get:
       operationId: getAllAuthors
@@ -164,3 +186,24 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/IdDTO'
+    ISBNList:
+      type: array
+      items:
+        type: string
+        example: 9781484256251, 9781484256252
+    ISBNResultList:
+      type: object
+      properties:
+        success:
+          type: array
+          description: Список успешно добавленных isbn
+          items:
+            type: string
+            example: 9781484256251
+        failed:
+          type: array
+          description: Список isbn, которые найти не удалось
+          items:
+            type: string
+            example: 9781484256252
+
