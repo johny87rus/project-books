@@ -55,6 +55,9 @@ public class GoogleApiProvider implements BookProvider {
             author.setLastname(it.split(" ")[1]);
             authorList.add(author);
         });
+        if (book.getAuthors() == null) {
+            return Optional.empty();
+        }
         return Optional.of(book);
     }
 }
