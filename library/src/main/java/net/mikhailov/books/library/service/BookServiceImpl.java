@@ -4,7 +4,8 @@ import lombok.AllArgsConstructor;
 import net.mikhailov.books.library.mapper.BookMapper;
 import net.mikhailov.books.library.mapper.IdMapper;
 import net.mikhailov.books.library.repository.BookRepository;
-import net.mikhailov.books.model.BookDTO;
+import net.mikhailov.books.model.BookDTOFull;
+import net.mikhailov.books.model.BookDTOPost;
 import net.mikhailov.books.model.IdDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -23,12 +24,12 @@ public class BookServiceImpl implements BookService{
 
 
     @Override
-    public List<BookDTO> getAllBooks() {
+    public List<BookDTOFull> getAllBooks() {
         return bookRepository.findAllBy().stream().map(bookMapper::bookToBookDTO).collect(Collectors.toList());
     }
 
     @Override
-    public IdDTO postBook(BookDTO bookDTO) {
+    public IdDTO postBook(BookDTOPost bookDTO) {
         if (bookRepository.existsBookByIsbn(bookDTO.getIsbn().longValue())) {
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT, "Book with same isbn found");

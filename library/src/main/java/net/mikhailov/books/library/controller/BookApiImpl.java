@@ -1,7 +1,8 @@
 package net.mikhailov.books.library.controller;
 
 import net.mikhailov.books.library.service.BookService;
-import net.mikhailov.books.model.BookDTO;
+import net.mikhailov.books.model.BookDTOFull;
+import net.mikhailov.books.model.BookDTOPost;
 import net.mikhailov.books.model.IdDTO;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,15 +19,15 @@ public class BookApiImpl implements BooksApi  {
         this.bookService = bookService;
     }
 
+
     @Override
-    public List<BookDTO> getAllBooks() {
+    public List<BookDTOFull> getAllBooks() {
         return bookService.getAllBooks();
     }
 
     @Override
-    public IdDTO postBook(BookDTO bookDTO) {
-        return bookService.postBook(bookDTO);
+    public IdDTO postBook(BookDTOPost bookDTOPost) {
+        return bookService.postBook(bookDTOPost);
     }
-
 
 }
