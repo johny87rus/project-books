@@ -31,7 +31,7 @@ public class GoogleApiProvider implements BookProvider {
         RestTemplate restTemplate = new RestTemplate();
         final String URI = URL + isbn + KEY + googleApiKey;
         GoogleBookList googleBookList = restTemplate.getForObject(URI, GoogleBookList.class);
-        if (googleBookList.getItems().isEmpty()) {
+        if (googleBookList == null || googleBookList.getItems() == null || googleBookList.getItems().isEmpty()) {
             return Optional.empty();
         }
         GoogleBookList.GoogleBook googleBook = googleBookList.getItems().get(0);
@@ -39,11 +39,11 @@ public class GoogleApiProvider implements BookProvider {
         book.setTitle(googleBook.getVolumeInfo().getTitle());
         book.setDescription(googleBook.getVolumeInfo().getDescription());
         book.setImageurl(googleBook.getVolumeInfo().getImageLinks().getThumbnail());
-        Optional<String> isbn_13 = googleBook.getVolumeInfo().getIndustryIdentifiers().stream().filter(it -> it.getType().equals("ISBN_13")).map(it -> it.getIdentifier()).findFirst();
-        if (isbn_13.isEmpty()) {
+        Optional<String> isbn13 = googleBook.getVolumeInfo().getIndustryIdentifiers().stream().filter(it -> it.getType().equals("ISBN_13")).map(GoogleBookList.IndustryIdentifiers::getIdentifier).findFirst();
+        if (isbn13.isEmpty()) {
             return Optional.empty();
         } else {
-            book.setIsbn(Long.valueOf(isbn_13.get()));
+            book.setIsbn(Long.valueOf(isbn13.get()));
         }
         List<Author> authorList = new LinkedList<>();
         if (googleBook.getVolumeInfo().getAuthors().isEmpty()) {
@@ -55,6 +55,7 @@ public class GoogleApiProvider implements BookProvider {
             author.setLastname(it.split(" ")[1]);
             authorList.add(author);
         });
+        book.setAuthors(authorList);
         if (book.getAuthors() == null) {
             return Optional.empty();
         }
