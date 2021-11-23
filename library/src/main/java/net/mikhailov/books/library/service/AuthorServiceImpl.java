@@ -33,11 +33,11 @@ public class AuthorServiceImpl implements AuthorService{
     }
 
     @Override
-    public Author putAuthor(Integer id, Author author) {
-        if (!authorRepository.existsById(id)) {
+    public Author putAuthor(Integer authorId, Author author) {
+        if (!authorRepository.existsById(authorId)) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Author not found");
         }
-        author.setId(id);
+        author.setId(authorId);
         return authorRepository.save(author);
 
     }

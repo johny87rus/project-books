@@ -10,5 +10,5 @@ import java.util.List;
 public interface AuthorService {
     Author postAuthor(Author author);
     List<Author> getAllAuthors();
-    Author putAuthor(Integer id, Author author);
+    Author putAuthor(Integer authorId, Author author);
 }

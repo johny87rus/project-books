@@ -28,8 +28,8 @@ public class AuthorApiImpl implements AuthorsApi {
     }
 
     @Override
-    public AuthorDTO putAuthor(Long id, AuthorDTO authorDTO) {
-        return authorMapper.authorToAuthorDTO(authorService.putAuthor(id.intValue(), authorMapper.authorDTOToAuthor(authorDTO)));
+    public AuthorDTO putAuthor(Integer authorId, AuthorDTO authorDTO) {
+        return authorMapper.authorToAuthorDTO(authorService.putAuthor(authorId, authorMapper.authorDTOToAuthor(authorDTO)));
     }
 
 }
