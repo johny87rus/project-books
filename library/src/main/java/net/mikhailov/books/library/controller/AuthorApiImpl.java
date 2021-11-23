@@ -2,7 +2,6 @@ package net.mikhailov.books.library.controller;
 
 import net.mikhailov.books.library.service.AuthorService;
 import net.mikhailov.books.model.AuthorDTO;
-import net.mikhailov.books.model.IdDTO;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -25,7 +24,13 @@ public class AuthorApiImpl implements AuthorsApi {
 
 
     @Override
-    public IdDTO postAuthor(AuthorDTO authorDTO) {
+    public AuthorDTO postAuthor(AuthorDTO authorDTO) {
         return authorService.postAuthor(authorDTO);
     }
+
+    @Override
+    public AuthorDTO putAuthor(Long id, AuthorDTO authorDTO) {
+        return authorService.putAuthor(id, authorDTO);
+    }
+
 }

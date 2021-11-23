@@ -103,10 +103,41 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/IdDTO'
+                $ref: '#/components/schemas/AuthorDTO'
         '409':
           description: Автор уже существует
+  /authors/{id}:
+    parameters:
+      - $ref: '#/components/parameters/id'
+    put:
+      operationId: putAuthor
+      summary: Изменить автора
+      requestBody:
+        description: Данные для обновления автора
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AuthorDTO"
+      tags:
+        - Авторы
+      responses:
+        '200':
+          description: Обновленный автор
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthorDTO"
 components:
+  parameters:
+    id:
+      name: id
+      in: path
+      description: Идентификатор
+      required: true
+      schema:
+        type: integer
+        format: int64
   schemas:
     IdDTO:
       type: object
@@ -122,6 +153,7 @@ components:
     AuthorDTO:
       type: object
       required:
+        - id
         - name
         - surname
       properties:
