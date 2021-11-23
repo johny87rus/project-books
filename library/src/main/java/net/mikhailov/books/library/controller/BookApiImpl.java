@@ -1,5 +1,8 @@
 package net.mikhailov.books.library.controller;
 
+import lombok.RequiredArgsConstructor;
+import net.mikhailov.books.library.mapper.BookMapper;
+import net.mikhailov.books.library.mapper.IdMapper;
 import net.mikhailov.books.library.service.BookService;
 import net.mikhailov.books.model.BookDTOFull;
 import net.mikhailov.books.model.BookDTOPost;
@@ -13,17 +16,16 @@ import java.util.List;
  * @author Mikhailov Evgenii
  */
 @RestController
+@RequiredArgsConstructor
 public class BookApiImpl implements BooksApi  {
-    BookService bookService;
-
-    public BookApiImpl(BookService bookService) {
-        this.bookService = bookService;
-    }
+    private final BookService bookService;
+    private final BookMapper bookMapper;
+    private final IdMapper idMapper;
 
 
     @Override
     public List<BookDTOFull> getAllBooks() {
-        return bookService.getAllBooks();
+        return bookService.getAllBooks().stream().map(bookMapper::bookToBookDTO).toList();
     }
 
     @Override
@@ -33,7 +35,7 @@ public class BookApiImpl implements BooksApi  {
 
     @Override
     public IdDTO postBook(BookDTOPost bookDTOPost) {
-        return bookService.postBook(bookDTOPost);
+        return idMapper.bookToIdDTO(bookService.postBook(bookMapper.bookDTOtoBook(bookDTOPost)));
     }
 
 }

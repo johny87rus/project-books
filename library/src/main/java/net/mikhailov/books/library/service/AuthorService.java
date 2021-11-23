@@ -1,6 +1,6 @@
 package net.mikhailov.books.library.service;
 
-import net.mikhailov.books.model.AuthorDTO;
+import net.mikhailov.books.library.model.Author;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import java.util.List;
  * @author Mikhailov Evgenii
  */
 public interface AuthorService {
-    AuthorDTO postAuthor(AuthorDTO authorDTO);
-    List<AuthorDTO> getAllAuthors();
-    AuthorDTO putAuthor(Long id, AuthorDTO authorDTO);
+    Author postAuthor(Author author);
+    List<Author> getAllAuthors();
+    Author putAuthor(Integer id, Author author);
 }
