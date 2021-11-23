@@ -107,11 +107,11 @@ paths:
         '409':
           description: Автор уже существует
   /authors/{id}:
+    parameters:
+      - $ref: '#/components/parameters/id'
     put:
       operationId: putAuthor
       summary: Изменить автора
-      parameters:
-        - $ref: '#/components/schemas/AuthorDTO'
       requestBody:
         description: Данные для обновления автора
         required: true
@@ -129,6 +129,15 @@ paths:
               schema:
                 $ref: "#/components/schemas/AuthorDTO"
 components:
+  parameters:
+    id:
+      name: id
+      in: path
+      description: Идентификатор
+      required: true
+      schema:
+        type: integer
+        format: int64
   schemas:
     IdDTO:
       type: object
