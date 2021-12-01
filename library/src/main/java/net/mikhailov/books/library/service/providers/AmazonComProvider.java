@@ -1,5 +1,6 @@
 package net.mikhailov.books.library.service.providers;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.mikhailov.books.library.model.Author;
 import net.mikhailov.books.library.model.Book;
@@ -19,6 +20,7 @@ import java.util.Optional;
  */
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class AmazonComProvider implements BookProvider {
     static final String URL = "https://www.amazon.com/s?i=stripbooks&rh=p_66%3A";
     static final String TITLESELECTOR = "#search > div.s-desktop-width-max.s-desktop-content.s-opposite-dir.sg-row > div.s-matching-dir.sg-col-16-of-20.sg-col.sg-col-8-of-12.sg-col-12-of-16 > div > span:nth-child(4) > div.s-main-slot.s-result-list.s-search-results.sg-row > div.s-result-item.s-asin.sg-col-0-of-12.sg-col-16-of-20.sg-col.s-widget-spacing-small.sg-col-12-of-16 > div > span > div > div > div:nth-child(2) > div.sg-col.sg-col-4-of-12.sg-col-8-of-16.sg-col-12-of-20 > div > div > div.a-section.a-spacing-none > h2 > a > span";
@@ -29,9 +31,6 @@ public class AmazonComProvider implements BookProvider {
 
     private final AuthorRepository authorRepository;
 
-    public AmazonComProvider(AuthorRepository authorRepository) {
-        this.authorRepository = authorRepository;
-    }
 
     @Override
     public Optional<Book> getBook(Long isbn) {

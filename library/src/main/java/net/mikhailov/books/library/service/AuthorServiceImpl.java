@@ -1,6 +1,6 @@
 package net.mikhailov.books.library.service;
 
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import net.mikhailov.books.library.model.Author;
 import net.mikhailov.books.library.repository.AuthorRepository;
 import org.springframework.http.HttpStatus;
@@ -13,9 +13,9 @@ import java.util.List;
  * @author Mikhailov Evgenii
  */
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class AuthorServiceImpl implements AuthorService{
-    AuthorRepository authorRepository;
+    private final AuthorRepository authorRepository;
 
 
     @Override

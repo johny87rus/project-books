@@ -1,5 +1,6 @@
 package net.mikhailov.books.library.service.providers;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.mikhailov.books.library.model.Author;
 import net.mikhailov.books.library.model.Book;
@@ -19,14 +20,12 @@ import java.util.Optional;
  */
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class BookFinderCom implements BookProvider{
     static final String URL = "https://www.bookfinder.com/search/?author=&title=&lang=en&new_used=*&destination=ru&currency=USD&mode=basic&st=sr&ac=qr&isbn=";
 
     private final AuthorRepository authorRepository;
 
-    public BookFinderCom(AuthorRepository authorRepository) {
-        this.authorRepository = authorRepository;
-    }
 
     @Override
     public Optional<Book> getBook(Long isbn) {

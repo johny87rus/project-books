@@ -1,5 +1,6 @@
 package net.mikhailov.books.library.service.providers;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.mikhailov.books.library.model.Book;
 import net.mikhailov.books.library.repository.AuthorRepository;
@@ -16,15 +17,13 @@ import java.util.Optional;
  */
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class AbebooksProvider implements BookProvider{
     static final String URL = "https://www.abebooks.com/servlet/SearchResults?isbn=";
     static final String ROOT_URL = "https://www.abebooks.com/";
 
     private final AuthorRepository authorRepository;
 
-    public AbebooksProvider(AuthorRepository authorRepository) {
-        this.authorRepository = authorRepository;
-    }
 
     @Override
     public Optional<Book> getBook(Long isbn) {

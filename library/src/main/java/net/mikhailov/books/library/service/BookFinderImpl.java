@@ -1,5 +1,6 @@
 package net.mikhailov.books.library.service;
 
+import lombok.RequiredArgsConstructor;
 import net.mikhailov.books.library.model.Book;
 import net.mikhailov.books.library.model.ISBNQueue;
 import net.mikhailov.books.library.repository.AuthorRepository;
@@ -20,23 +21,16 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author Mikhailov Evgenii
  */
 @Service
+@RequiredArgsConstructor
 public class BookFinderImpl implements BookFinder {
 
-    BookRepository bookRepository;
-    ISBNQueueRepository isbnQueueRepository;
-    AuthorRepository authorRepository;
+    private final BookRepository bookRepository;
+    private final ISBNQueueRepository isbnQueueRepository;
+    private final AuthorRepository authorRepository;
 
-    BookProvider bookProvider;
+    private final BookProvider bookProvider;
 
     private final ReentrantLock reentrantLock = new ReentrantLock();
-
-
-    public BookFinderImpl(BookRepository bookRepository, ISBNQueueRepository isbnQueueRepository, AuthorRepository authorRepository, BookProvider bookProvider) {
-        this.bookRepository = bookRepository;
-        this.isbnQueueRepository = isbnQueueRepository;
-        this.authorRepository = authorRepository;
-        this.bookProvider = bookProvider;
-    }
 
     @Override
     @Async
