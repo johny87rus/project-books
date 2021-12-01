@@ -7,6 +7,7 @@ package net.mikhailov.books.library.api;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
+import net.mikhailov.books.library.repository.PostgreContainerTest;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -19,7 +20,8 @@ import static org.hamcrest.Matchers.is;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DisplayName("Тест API Авторы")
-class AuthorApiTest {
+class AuthorApiTest extends PostgreContainerTest {
+
     @LocalServerPort
     private Integer port;
 
