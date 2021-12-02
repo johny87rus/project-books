@@ -1,6 +1,5 @@
 package net.mikhailov.books.library.repository;
 
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.util.TestPropertyValues;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -13,11 +12,10 @@ import org.testcontainers.junit.jupiter.Testcontainers;
  * @author Evgenii Mikhailov
  */
 @Testcontainers
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ContextConfiguration(initializers = PostgreContainerTest.Initializer.class)
 public abstract class PostgreContainerTest {
     @Container
-    static PostgreSQLContainer postgreSQLContainer = new PostgreSQLContainer("postgres:11.1")
+    static PostgreSQLContainer postgreSQLContainer = new PostgreSQLContainer("postgres:13.4")
             .withDatabaseName("integration-tests-db")
             .withUsername("sa")
             .withPassword("sa");
