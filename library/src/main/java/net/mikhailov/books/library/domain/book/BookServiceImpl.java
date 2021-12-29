@@ -16,7 +16,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class BookServiceImpl implements BookService{
+public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final BookProvider bookProvider;
     private final BookFactory bookFactory;
@@ -58,15 +58,15 @@ public class BookServiceImpl implements BookService{
                 isbnResultList.addSuccessItem(isbn);
             }
             Optional<Book> book = bookProvider.getBook(isbnLong);
-            book.ifPresent(it -> {
-                var savedAuthors  = new LinkedHashSet<Author>();
+            book.ifPresentOrElse(it -> {
+                var savedAuthors = new LinkedHashSet<Author>();
                 for (Author author : it.getAuthors()) {
                     savedAuthors.add(authorService.postAuthor(author));
                 }
                 it.setAuthors(savedAuthors);
                 bookRepository.save(it);
                 isbnResultList.addSuccessItem(isbn);
-            });
+            }, () -> isbnResultList.addFailedItem(isbn));
         }
         return isbnResultList;
     }

@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * @author Evgenii Mikhailov
@@ -28,37 +28,48 @@ public class GoogleApiProvider implements BookProvider {
 
     @Override
     public Optional<Book> getBook(Long isbn) {
-        RestTemplate restTemplate = new RestTemplate();
-        final String URI = URL + isbn + KEY + googleApiKey;
-        GoogleBookList googleBookList = restTemplate.getForObject(URI, GoogleBookList.class);
+        var restTemplate = new RestTemplate();
+        final var URI = URL + isbn + KEY + googleApiKey;
+        var googleBookList = restTemplate.getForObject(URI, GoogleBookList.class);
         if (googleBookList == null || googleBookList.getItems() == null || googleBookList.getItems().isEmpty()) {
             return Optional.empty();
         }
-        GoogleBookList.GoogleBook googleBook = googleBookList.getItems().get(0);
-        Book book = new Book();
+        var googleBookOptional = findBook(googleBookList, isbn);
+        if (googleBookOptional.isEmpty()) {
+            return Optional.empty();
+        }
+        var googleBook = googleBookOptional.get();
+        var book = new Book();
         book.setTitle(googleBook.getVolumeInfo().getTitle());
         book.setDescription(googleBook.getVolumeInfo().getDescription());
         book.setImageurl(googleBook.getVolumeInfo().getImageLinks().getThumbnail());
-        Optional<String> isbn13 = googleBook.getVolumeInfo().getIndustryIdentifiers().stream().filter(it -> it.getType().equals("ISBN_13")).map(GoogleBookList.IndustryIdentifiers::getIdentifier).findFirst();
-        if (isbn13.isEmpty()) {
-            return Optional.empty();
-        } else {
-            book.setIsbn(Long.valueOf(isbn13.get()));
-        }
-        Set<Author> authorList = new LinkedHashSet<>();
+        book.setIsbn(isbn);
+        var authorSet = new LinkedHashSet<Author>();
         if (googleBook.getVolumeInfo().getAuthors().isEmpty()) {
             return Optional.empty();
         }
         googleBook.getVolumeInfo().getAuthors().forEach(it -> {
-            Author author = new Author();
+            var author = new Author();
             author.setFirstname(it.split(" ")[0]);
             author.setLastname(it.split(" ")[1]);
-            authorList.add(author);
+            authorSet.add(author);
         });
-        book.setAuthors(authorList);
+        book.setAuthors(authorSet);
         if (book.getAuthors() == null) {
             return Optional.empty();
         }
         return Optional.of(book);
+    }
+
+    private Optional<GoogleBookList.GoogleBook> findBook(GoogleBookList googleBookList, Long isbn) {
+        Optional<GoogleBookList.GoogleBook> byIsbn = googleBookList.getItems().stream()
+                .filter(it -> isbn.equals(Long.valueOf(it.getVolumeInfo().getIndustryIdentifiers().stream().filter(isbnCode -> isbnCode.getType().equals("ISBN_13")).map(GoogleBookList.IndustryIdentifiers::getIdentifier).findFirst().orElse("0"))))
+                .findFirst();
+        if (byIsbn.isEmpty()) {
+            return googleBookList.getItems().stream()
+                    .filter(it -> Objects.nonNull(it.getSearchInfo()))
+                    .filter(it -> it.getSearchInfo().getTextSnippet().contains(isbn.toString())).findFirst();
+        }
+        return byIsbn;
     }
 }

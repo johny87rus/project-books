@@ -5,10 +5,6 @@ import net.mikhailov.books.library.controller.mapper.AuthorAdapter;
 import net.mikhailov.books.library.controller.mapper.AuthorMapper;
 import net.mikhailov.books.library.domain.author.AuthorService;
 import net.mikhailov.books.model.AuthorDTO;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.converter.HttpMessageNotReadableException;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -53,12 +49,6 @@ public class AuthorApiImpl implements AuthorsApi {
     @Override
     public AuthorDTO putAuthor(Long authorId, AuthorDTO authorDTO) {
         return authorMapper.authorToAuthorDTO(authorService.putAuthor(new AuthorAdapter(authorId, authorDTO)));
-    }
-
-    @ExceptionHandler
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public void handle(HttpMessageNotReadableException e) {
-        System.out.println(e.getMessage() + e);
     }
 
 }

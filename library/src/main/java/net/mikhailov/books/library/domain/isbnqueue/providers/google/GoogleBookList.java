@@ -18,6 +18,13 @@ public class GoogleBookList {
     @Setter
     public static class GoogleBook {
         private VolumeInfo volumeInfo;
+        private SearchInfo searchInfo;
+    }
+
+    @Getter
+    @Setter
+    public static class SearchInfo {
+        private String textSnippet;
     }
 
     @Getter
