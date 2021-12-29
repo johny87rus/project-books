@@ -1,6 +1,7 @@
 package net.mikhailov.books.library.domain.author;
 
 import lombok.RequiredArgsConstructor;
+import net.mikhailov.books.library.exceptions.AuthorNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -47,5 +48,13 @@ public class AuthorServiceImpl implements AuthorService{
         }
         return authorRepository.save(authorFactory.build(authorInfo));
 
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Author getByID(Long id) {
+        return authorRepository.findById(id).orElseThrow(AuthorNotFoundException::new);
     }
 }

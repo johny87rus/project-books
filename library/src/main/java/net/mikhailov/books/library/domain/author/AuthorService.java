@@ -5,6 +5,7 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import java.util.List;
 
 /**
@@ -32,4 +33,11 @@ public interface AuthorService {
      */
     @Validated(ValidGroup.Update.class)
     Author putAuthor(@Valid @NotNull AuthorInfo authorInfo);
+
+    /**
+     * Получение автора по идентификатору
+     * @param id идентификатор автора
+     * @return автор
+     */
+    Author getByID(@Positive @NotNull Long id);
 }

@@ -9,9 +9,9 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.LinkedHashSet;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * @author Evgenii Mikhailov
@@ -45,7 +45,7 @@ public class GoogleApiProvider implements BookProvider {
         } else {
             book.setIsbn(Long.valueOf(isbn13.get()));
         }
-        List<Author> authorList = new LinkedList<>();
+        Set<Author> authorList = new LinkedHashSet<>();
         if (googleBook.getVolumeInfo().getAuthors().isEmpty()) {
             return Optional.empty();
         }

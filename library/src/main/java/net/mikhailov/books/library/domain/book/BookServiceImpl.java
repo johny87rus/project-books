@@ -2,7 +2,7 @@ package net.mikhailov.books.library.domain.book;
 
 import lombok.RequiredArgsConstructor;
 import net.mikhailov.books.library.domain.author.Author;
-import net.mikhailov.books.library.domain.author.AuthorRepository;
+import net.mikhailov.books.library.domain.author.AuthorService;
 import net.mikhailov.books.library.domain.isbnqueue.providers.BookProvider;
 import net.mikhailov.books.model.ISBNResultList;
 import org.springframework.http.HttpStatus;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
-import java.util.LinkedList;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,8 +19,9 @@ import java.util.Optional;
 public class BookServiceImpl implements BookService{
     private final BookRepository bookRepository;
     private final BookProvider bookProvider;
-    private final AuthorRepository authorRepository;
     private final BookFactory bookFactory;
+
+    private final AuthorService authorService;
 
 
     /**
@@ -52,15 +53,15 @@ public class BookServiceImpl implements BookService{
     public ISBNResultList initBooks(List<String> isbnList) {
         ISBNResultList isbnResultList = new ISBNResultList();
         for (String isbn : isbnList) {
-            Long isbnLong = Long.valueOf(isbn);
+            var isbnLong = Long.valueOf(isbn);
             if (bookRepository.existsBookByIsbn(isbnLong)) {
                 isbnResultList.addSuccessItem(isbn);
             }
             Optional<Book> book = bookProvider.getBook(isbnLong);
             book.ifPresent(it -> {
-                List<Author> savedAuthors  = new LinkedList<>();
+                var savedAuthors  = new LinkedHashSet<Author>();
                 for (Author author : it.getAuthors()) {
-                    savedAuthors.add(authorRepository.save(author));
+                    savedAuthors.add(authorService.postAuthor(author));
                 }
                 it.setAuthors(savedAuthors);
                 bookRepository.save(it);

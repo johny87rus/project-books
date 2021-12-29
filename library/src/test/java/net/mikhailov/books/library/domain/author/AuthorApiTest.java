@@ -7,20 +7,18 @@ package net.mikhailov.books.library.domain.author;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
-import net.mikhailov.books.library.repository.PostgreContainerTest;
+import net.mikhailov.books.library.AbstractTest;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.is;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @DisplayName("Тест API Авторы")
-class AuthorApiTest extends PostgreContainerTest {
+class AuthorApiTest extends AbstractTest {
 
     @LocalServerPort
     private Integer port;
@@ -33,10 +31,10 @@ class AuthorApiTest extends PostgreContainerTest {
     @Test
     @DisplayName("Создание автора")
     void testCreateAuthor() {
-        String authorBody = "{\"name\" : \"Joshua\",\"surname\" : \"Bloch\"}";
+        String authorBody = "{\"name\" : \"JoshuaPost\",\"surname\" : \"Bloch\"}";
         given().contentType(ContentType.JSON).body(authorBody).when().post("/authors").then()
                 .statusCode(200)
-                .body("name", is("Joshua"))
+                .body("name", is("JoshuaPost"))
                 .body("surname", is("Bloch"))
                 .body("id", Matchers.notNullValue());
     }
@@ -44,7 +42,7 @@ class AuthorApiTest extends PostgreContainerTest {
     @Test
     @DisplayName("Изменение автора")
     void testPutAuthor() {
-        String authorBody = "{\"name\" : \"Joshua\",\"surname\" : \"Bloch\"}";
+        String authorBody = "{\"name\" : \"JoshuaPut\",\"surname\" : \"Bloch\"}";
         JsonPath jsonPath = given().contentType(ContentType.JSON).body(authorBody).when().post("/authors").jsonPath();
 
         Object id = jsonPath.get("id");

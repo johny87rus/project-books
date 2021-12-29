@@ -1,10 +1,12 @@
 package net.mikhailov.books.library.domain.book;
 
+import net.mikhailov.books.library.domain.author.Author;
 import net.mikhailov.books.library.validators.ValidGroup;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
+import java.util.Set;
 
 /**
  * Информация о книге
@@ -48,6 +50,12 @@ public interface BookInfo {
      */
     @NotNull(groups = {ValidGroup.Create.class, ValidGroup.Update.class}, message = "{validation.BookInfo.create.url.notNull}")
     String getImageurl();
+
+    /**
+     * Множество авторов
+     * @return множество авторов
+     */
+    Set<Author> getAuthors();
 
 
 

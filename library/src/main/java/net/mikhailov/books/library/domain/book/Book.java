@@ -5,7 +5,8 @@ import lombok.Setter;
 import net.mikhailov.books.library.domain.author.Author;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Set;
+
 @Entity
 @Getter
 @Setter
@@ -24,7 +25,7 @@ public class Book implements BookInfo {
 
     @ManyToMany
     @JoinTable(name = "book_author", joinColumns = @JoinColumn(name = "bookid"), inverseJoinColumns = @JoinColumn(name = "authorid"))
-    List<Author> authors;
+    Set<Author> authors;
 
     @Column(name = "isbn", nullable = false)
     private Long isbn;
