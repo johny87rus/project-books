@@ -1,0 +1,12 @@
+testDesc;id;title;desc;url;isbn;strGroup;propertyName;message
+Создание книги с идентификатором;1;API Design Patterns;Api are contracts that define how applications communicate;someUrl;123456;create;id;Для создания книги идентификатор должен быть null
+Создание книги без ISBN;;API Design Patterns;Api are contracts that define how applications communicate;someUrl;;create;isbn;ISBN книги не должен быть null
+Создание книги без url;;API Design Patterns;Api are contracts that define how applications communicate;;123456;create;imageurl;URL книги не должен быть null
+Создание книги без названия;;;Api are contracts that define how applications communicate;someUrl;123456;create;title;Наименование книги не должен быть null
+Создание книги без описания;;API Design Patterns;;someUrl;123456;create;description;Описание книги не должен быть null
+Изменение книги без id;;API Design Patterns;Api are contracts that define how applications communicate;someUrl;12345;update;id;Id книги не должен быть null
+Изменение книги без ISBN;1;API Design Patterns;Api are contracts that define how applications communicate;someUrl;;update;isbn;ISBN книги не должен быть null
+Изменение книги без url;1;API Design Patterns;Api are contracts that define how applications communicate;;123456;update;imageurl;URL книги не должен быть null
+Изменение книги без названия;1;;Api are contracts that define how applications communicate;someUrl;123456;update;title;Наименование книги не должен быть null
+Изменение книги без описания;1;API Design Patterns;;someUrl;123456;update;description;Описание книги не должен быть null
+Удаление книги без id;;;;;;delete;id;Id книги не должен быть null

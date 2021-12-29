@@ -1,9 +1,9 @@
 package net.mikhailov.books.library.controller;
 
 import lombok.RequiredArgsConstructor;
-import net.mikhailov.books.library.mapper.BookMapper;
-import net.mikhailov.books.library.mapper.IdMapper;
-import net.mikhailov.books.library.service.BookService;
+import net.mikhailov.books.library.controller.mapper.BookMapper;
+import net.mikhailov.books.library.controller.mapper.IdMapper;
+import net.mikhailov.books.library.domain.book.BookService;
 import net.mikhailov.books.model.BookDTOFull;
 import net.mikhailov.books.model.BookDTOPost;
 import net.mikhailov.books.model.ISBNResultList;

@@ -1,0 +1,8 @@
+testDesc;id;title;desc;strGroup;propertyName;message
+Создание автора с идентификатором;1;Joshua;Bloch;create;id;Для создания автора идентификатор должен быть null
+Создание автора без имени;;;Bloch;create;firstname;Имя автора не должен быть null
+Создание книги без фамилии;;Joshua;;create;lastname;Фамилия автора не должен быть null
+Изменение книги без id;;Joshua;Bloch;update;id;Id автора не должен быть null
+Изменение книги без имени;1;;Bloch;update;firstname;Имя автора не должен быть null
+Изменение книги без фамилии;1;Joshua;;update;lastname;Фамилия автора не должен быть null
+Удаление книги без id;;;;delete;id;Id автора не должен быть null
