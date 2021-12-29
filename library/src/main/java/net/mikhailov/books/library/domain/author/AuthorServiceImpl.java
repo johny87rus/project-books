@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Mikhailov Evgenii
@@ -14,8 +15,8 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class AuthorServiceImpl implements AuthorService{
-    private final AuthorRepository authorRepository;
-    private final AuthorFactory authorFactory;
+    private final AuthorRepository repository;
+    private final AuthorFactory factory;
 
 
     /**
@@ -23,11 +24,11 @@ public class AuthorServiceImpl implements AuthorService{
      */
     @Override
     public Author postAuthor(AuthorInfo authorInfo) {
-        if (authorRepository.existsAuthorByFirstnameAndLastname(authorInfo.getFirstname(), authorInfo.getLastname())) {
+        if (repository.existsAuthorByFirstnameAndLastname(authorInfo.getFirstname(), authorInfo.getLastname())) {
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT, "Author with same name found");
         }
-        return authorRepository.save(authorFactory.build(authorInfo));
+        return repository.save(factory.build(authorInfo));
     }
 
     /**
@@ -35,7 +36,7 @@ public class AuthorServiceImpl implements AuthorService{
      */
     @Override
     public List<Author> getAllAuthors() {
-        return authorRepository.findAll();
+        return repository.findAll();
     }
 
     /**
@@ -43,10 +44,10 @@ public class AuthorServiceImpl implements AuthorService{
      */
     @Override
     public Author putAuthor(AuthorInfo authorInfo) {
-        if (!authorRepository.existsById(authorInfo.getId())) {
+        if (!repository.existsById(authorInfo.getId())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Author not found");
         }
-        return authorRepository.save(authorFactory.build(authorInfo));
+        return repository.save(factory.build(authorInfo));
 
     }
 
@@ -55,6 +56,11 @@ public class AuthorServiceImpl implements AuthorService{
      */
     @Override
     public Author getByID(Long id) {
-        return authorRepository.findById(id).orElseThrow(AuthorNotFoundException::new);
+        return repository.findById(id).orElseThrow(AuthorNotFoundException::new);
+    }
+
+    @Override
+    public Optional<Author> findAuthorByNameAndSurname(String name, String surname) {
+        return repository.findAuthorByFirstnameAndLastnameAllIgnoreCase(name, surname);
     }
 }

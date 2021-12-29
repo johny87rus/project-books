@@ -56,12 +56,15 @@ public class BookServiceImpl implements BookService {
             var isbnLong = Long.valueOf(isbn);
             if (bookRepository.existsBookByIsbn(isbnLong)) {
                 isbnResultList.addSuccessItem(isbn);
+                continue;
             }
             Optional<Book> book = bookProvider.getBook(isbnLong);
             book.ifPresentOrElse(it -> {
                 var savedAuthors = new LinkedHashSet<Author>();
                 for (Author author : it.getAuthors()) {
-                    savedAuthors.add(authorService.postAuthor(author));
+                    if (authorService.findAuthorByNameAndSurname(author.getFirstname(), author.getLastname()).isEmpty()) {
+                        savedAuthors.add(authorService.postAuthor(author));
+                    }
                 }
                 it.setAuthors(savedAuthors);
                 bookRepository.save(it);

@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author Mikhailov Evgenii
@@ -40,4 +41,12 @@ public interface AuthorService {
      * @return автор
      */
     Author getByID(@Positive @NotNull Long id);
+
+    /**
+     * Поиск автора по имени и фамилии
+     * @param name имя автора
+     * @param surname фамилия автора
+     * @return автор
+     */
+    Optional<Author> findAuthorByNameAndSurname(String name, String surname);
 }
