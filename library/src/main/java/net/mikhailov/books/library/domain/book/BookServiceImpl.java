@@ -17,9 +17,9 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
-    private final BookRepository bookRepository;
+    private final BookRepository repository;
     private final BookProvider bookProvider;
-    private final BookFactory bookFactory;
+    private final BookFactory factory;
 
     private final AuthorService authorService;
 
@@ -29,7 +29,7 @@ public class BookServiceImpl implements BookService {
      */
     @Override
     public List<Book> getAllBooks() {
-        return bookRepository.findAll();
+        return repository.findAll();
     }
 
     /**
@@ -38,11 +38,11 @@ public class BookServiceImpl implements BookService {
     @Override
     @Transactional
     public Book postBook(BookInfo bookInfo) {
-        if (bookRepository.existsBookByIsbn(bookInfo.getIsbn())) {
+        if (repository.existsBookByIsbn(bookInfo.getIsbn())) {
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT, "Book with same isbn found");
         }
-        return bookRepository.save(bookFactory.build(bookInfo));
+        return repository.save(factory.build(bookInfo));
     }
 
     /**
@@ -54,7 +54,7 @@ public class BookServiceImpl implements BookService {
         ISBNResultList isbnResultList = new ISBNResultList();
         for (String isbn : isbnList) {
             var isbnLong = Long.valueOf(isbn);
-            if (bookRepository.existsBookByIsbn(isbnLong)) {
+            if (repository.existsBookByIsbn(isbnLong)) {
                 isbnResultList.addSuccessItem(isbn);
                 continue;
             }
@@ -67,10 +67,18 @@ public class BookServiceImpl implements BookService {
                     }
                 }
                 it.setAuthors(savedAuthors);
-                bookRepository.save(it);
+                repository.save(it);
                 isbnResultList.addSuccessItem(isbn);
             }, () -> isbnResultList.addFailedItem(isbn));
         }
         return isbnResultList;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void deleteBook(Long bookId) {
+        repository.deleteById(bookId);
     }
 }

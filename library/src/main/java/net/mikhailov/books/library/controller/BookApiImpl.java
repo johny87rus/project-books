@@ -23,6 +23,14 @@ public class BookApiImpl implements BooksApi  {
     private final BookMapper bookMapper;
     private final IdMapper idMapper;
 
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public Void deleteBook(Long bookId) {
+        bookService.deleteBook(bookId);
+        return null;
+    }
 
     /**
      * {@inheritDoc}

@@ -72,6 +72,19 @@ paths:
                 $ref: '#/components/schemas/ISBNResultList'
         '500':
           description: Произошла непредвиденная ошибка
+  /books/{bookId}:
+    parameters:
+      - $ref: '#/components/parameters/bookId'
+    delete:
+      operationId: deleteBook
+      summary: Удалить книгу
+      tags:
+        - Книги
+      responses:
+        '200':
+          description: Книга удалена
+        '404':
+          description: Книга не найдена
   /authors:
     get:
       operationId: getAllAuthors
@@ -142,6 +155,14 @@ components:
   parameters:
     authorId:
       name: authorId
+      in: path
+      description: Идентификатор
+      required: true
+      schema:
+        type: integer
+        format: int64
+    bookId:
+      name: bookId
       in: path
       description: Идентификатор
       required: true

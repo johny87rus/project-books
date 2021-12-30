@@ -1,0 +1,22 @@
+const save = document.querySelector('#saveBtn');
+save.addEventListener('click', evt => {
+    const request = new XMLHttpRequest();
+    request.open('POST', 'books');
+    request.setRequestHeader('Content-Type', 'application/json');
+    const object = {};
+    const title = document.querySelector('#floatingTitle');
+    object['title'] = title.value;
+    const isbn = document.querySelector('#floatingIsbn');
+    object['isbn'] = isbn.value;
+    const description = document.querySelector('#floatingDescription');
+    object['description'] = description.value;
+    const imageurl = document.querySelector('#floatingImage');
+    object['imageurl'] = imageurl.value;
+    const json = JSON.stringify(object);
+    request.send(json);
+    title.value = '';
+    isbn.value = '';
+    description.value = '';
+    imageurl.value = '';
+    location.href = 'index.html';
+});

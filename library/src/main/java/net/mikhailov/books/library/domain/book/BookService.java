@@ -2,6 +2,7 @@ package net.mikhailov.books.library.domain.book;
 
 import net.mikhailov.books.model.ISBNResultList;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public interface BookService {
@@ -24,4 +25,9 @@ public interface BookService {
      * @return - результат импорта
      */
     ISBNResultList initBooks(List<String> isbnList);
+
+    /**
+     * Удалить книгу по идентификатору
+     */
+    void deleteBook(@NotNull Long bookId);
 }
