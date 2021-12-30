@@ -78,7 +78,8 @@ public class BookServiceImpl implements BookService {
      * {@inheritDoc}
      */
     @Override
+    @Transactional
     public void deleteBook(Long bookId) {
-        repository.deleteById(bookId);
+        repository.deleteByIdOrIsbn(bookId);
     }
 }
