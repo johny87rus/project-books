@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +24,7 @@ public class AuthorServiceImpl implements AuthorService{
      * {@inheritDoc}
      */
     @Override
+    @Transactional
     public Author postAuthor(AuthorInfo authorInfo) {
         if (repository.existsAuthorByFirstnameAndLastname(authorInfo.getFirstname(), authorInfo.getLastname())) {
             throw new ResponseStatusException(
@@ -43,6 +45,7 @@ public class AuthorServiceImpl implements AuthorService{
      * {@inheritDoc}
      */
     @Override
+    @Transactional
     public Author putAuthor(AuthorInfo authorInfo) {
         if (!repository.existsById(authorInfo.getId())) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Author not found");
