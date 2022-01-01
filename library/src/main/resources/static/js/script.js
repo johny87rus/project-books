@@ -28,7 +28,7 @@ class MenuCard {
         element.innerHTML = `
              <div class="card" style="width: 14rem;">
                 <img src="${this.imageurl}" class="card-img-top"
-                     alt="Spring Boot 2">
+                     alt="${this.title}-image">
                 <div class="card-body">
                     <h5 class="card-title">${this.title}</h5>
                     <h6 class="card-subtitle mb-2 text-muted">${this.isbn}</h6>
