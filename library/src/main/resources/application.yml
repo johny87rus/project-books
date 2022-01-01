@@ -10,4 +10,13 @@ springdoc:
 server:
   error:
     include-stacktrace: never
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - info
+          - health
+          - metrics
+          - liquebase
 
