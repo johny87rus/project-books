@@ -14,7 +14,7 @@ import java.io.IOException;
  * @author Mikhailov Evgenii
  */
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/v1/api")
 public class SwaggerAPIController {
     @GetMapping
     public Object getApi() throws IOException {

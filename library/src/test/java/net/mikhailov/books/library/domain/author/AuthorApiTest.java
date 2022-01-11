@@ -32,7 +32,7 @@ class AuthorApiTest extends AbstractTest {
     @DisplayName("Создание автора")
     void testCreateAuthor() {
         String authorBody = "{\"name\" : \"JoshuaPost\",\"surname\" : \"Bloch\"}";
-        given().contentType(ContentType.JSON).body(authorBody).when().post("/authors").then()
+        given().contentType(ContentType.JSON).body(authorBody).when().post("/api/v1/authors").then()
                 .statusCode(200)
                 .body("name", is("JoshuaPost"))
                 .body("surname", is("Bloch"))
@@ -43,11 +43,11 @@ class AuthorApiTest extends AbstractTest {
     @DisplayName("Изменение автора")
     void testPutAuthor() {
         String authorBody = "{\"name\" : \"JoshuaPut\",\"surname\" : \"Bloch\"}";
-        JsonPath jsonPath = given().contentType(ContentType.JSON).body(authorBody).when().post("/authors").jsonPath();
+        JsonPath jsonPath = given().contentType(ContentType.JSON).body(authorBody).when().post("/api/v1/authors").jsonPath();
 
         Object id = jsonPath.get("id");
         authorBody = "{\"name\" : \"Tom\",\"surname\" : \"Cruz\"}";
-        given().contentType(ContentType.JSON).body(authorBody).when().put("/authors/" + id).then()
+        given().contentType(ContentType.JSON).body(authorBody).when().put("/api/v1/authors/" + id).then()
                 .statusCode(200)
                 .body("name", is("Tom"))
                 .body("surname", is("Cruz"))

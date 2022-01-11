@@ -26,7 +26,7 @@ app.component('add-book-display', {
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify(this.$data)
                 };
-                const response = await fetch("/books", requestOptions);
+                const response = await fetch("/api/v1/books", requestOptions);
                 this.books = await response.json();
                 this.$emit('book-saved');
             },

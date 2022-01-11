@@ -12,7 +12,7 @@ app.component('delete-book-display', {
                 const requestOptions = {
                     method: "DELETE"
                 };
-                await fetch("/books" + '/' + this.id, requestOptions);
+                await fetch("/api/v1/books" + '/' + this.id, requestOptions);
                 this.$emit('book-deleted');
             },
         cancel() {

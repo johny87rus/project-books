@@ -29,12 +29,12 @@ class BookApiTest extends AbstractTest {
     @DisplayName("Создание книги")
     void postBook() {
         var authorBody = "{\"name\" : \"JoshuaForBook\",\"surname\" : \"Bloch\"}";
-        var jsonPath = given().contentType(ContentType.JSON).body(authorBody).when().post("/authors").jsonPath();
+        var jsonPath = given().contentType(ContentType.JSON).body(authorBody).when().post("/api/v1/authors").jsonPath();
         var authorId = jsonPath.get("id");
 
         var bookBody = "{\"title\" : \"JPA AND HIBERNATE\",\"description\" : \"Java Persistence API\", \"isbn\":11231111111, \"imageurl\":\"https://youtube.com/\"" +
                 ", \"authors\":[{\"id\":"+ authorId + "}]}";
-        var post = given().contentType(ContentType.JSON).body(bookBody).when().post("/books").then()
+        var post = given().contentType(ContentType.JSON).body(bookBody).when().post("/api/v1/books").then()
                 .statusCode(200);
     }
 

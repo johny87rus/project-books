@@ -12,9 +12,9 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0.html
 servers:
   - description: main
-    url: https://library.mikhailov.net
+    url: https://library.mikhailov.net/api/v1/
   - description: localhost
-    url: http://localhost:8080
+    url: http://localhost:8080/api/v1
 paths:
   /books:
     get:

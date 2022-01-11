@@ -9,6 +9,7 @@ import net.mikhailov.books.model.BookDTOFull;
 import net.mikhailov.books.model.BookDTOPost;
 import net.mikhailov.books.model.ISBNResultList;
 import net.mikhailov.books.model.IdDTO;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -18,6 +19,7 @@ import java.util.List;
  */
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/v1")
 public class BookApiImpl implements BooksApi  {
     private final BookService bookService;
     private final BookMapper bookMapper;

@@ -8,7 +8,7 @@ const app = Vue.createApp({
     },
     methods: {
         async updateBooks() {
-            const response = await fetch("/books");
+            const response = await fetch("/api/v1/books");
             this.books = await response.json();
         },
         addBook() {

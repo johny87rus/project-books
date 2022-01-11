@@ -5,6 +5,7 @@ import net.mikhailov.books.library.controller.mapper.AuthorAdapter;
 import net.mikhailov.books.library.controller.mapper.AuthorMapper;
 import net.mikhailov.books.library.domain.author.AuthorService;
 import net.mikhailov.books.model.AuthorDTO;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -14,6 +15,7 @@ import java.util.List;
  */
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/api/v1")
 public class AuthorApiImpl implements AuthorsApi {
     private final AuthorService authorService;
     private final AuthorMapper authorMapper;
