@@ -7,14 +7,15 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-    /**
-     * Первый вариант своей реализации UserDetailsService и PasswordEncoder через @Bean
-     *
-     * @return
-     */
+//    /**
+//     * Первый вариант своей реализации UserDetailsService и PasswordEncoder через @Bean
+//     *
+//     * @return
+//     */
 //    @Bean
 //    public UserDetailsService userDetailsService() {
 //        var userDetailService = new InMemoryUserDetailsManager();
@@ -30,13 +31,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //    public PasswordEncoder passwordEncoder() {
 //        return NoOpPasswordEncoder.getInstance();
 //    }
-    @Override
+//    @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.httpBasic();
+        http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()); //Включаем CSRF в Cookie
         http.authorizeRequests().anyRequest().authenticated();
+        http.formLogin().and().logout().deleteCookies("JSESSIONID");
 //        http.authorizeRequests().anyRequest().permitAll(); //разрешить все
     }
-
+//
     /**
      * Второй вариант  реализации UserDetailsService и PasswordEncoder через configure(auth)
      *
@@ -53,8 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         userDetailService.createUser(user);
 
         auth.userDetailsService(userDetailService).passwordEncoder(NoOpPasswordEncoder.getInstance());
-
-        //Еще вариант :
+//        Еще вариант :
 //        auth.inMemoryAuthentication()
 //                    .withUser("evgenii")
 //                    .password("test")

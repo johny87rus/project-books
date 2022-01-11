@@ -9,8 +9,14 @@ app.component('delete-book-display', {
         <button type="button" class="btn btn-primary" id="cancelBtn" @click="cancel">Назад</button>`,
     methods: {
             async deleteBook() {
+                const csrfToken = document.cookie.split('=')[1];
+                const headers = new Headers({
+                    'X-XSRF-TOKEN': csrfToken,
+                    "Content-Type": "application/json"
+                });
                 const requestOptions = {
                     method: "DELETE",
+                    headers,
                     credentials: "same-origin"
                 };
                 await fetch("/api/v1/books" + '/' + this.id, requestOptions);

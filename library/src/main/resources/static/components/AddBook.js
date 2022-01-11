@@ -21,9 +21,14 @@ app.component('add-book-display', {
         <button type="button" class="btn btn-primary" id="cancelBtn" @click="cancel">Назад</button>`,
     methods: {
             async save() {
+                const csrfToken = document.cookie.split('=')[1];
+                const headers = new Headers({
+                    'X-XSRF-TOKEN': csrfToken,
+                    "Content-Type": "application/json"
+                });
                 const requestOptions = {
                     method: "POST",
-                    headers: { "Content-Type": "application/json" },
+                    headers,
                     body: JSON.stringify(this.$data),
                     credentials: "same-origin"
                 };
