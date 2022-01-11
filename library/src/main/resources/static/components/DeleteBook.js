@@ -10,7 +10,8 @@ app.component('delete-book-display', {
     methods: {
             async deleteBook() {
                 const requestOptions = {
-                    method: "DELETE"
+                    method: "DELETE",
+                    credentials: "same-origin"
                 };
                 await fetch("/api/v1/books" + '/' + this.id, requestOptions);
                 this.$emit('book-deleted');

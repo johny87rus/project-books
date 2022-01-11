@@ -24,7 +24,8 @@ app.component('add-book-display', {
                 const requestOptions = {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(this.$data)
+                    body: JSON.stringify(this.$data),
+                    credentials: "same-origin"
                 };
                 const response = await fetch("/api/v1/books", requestOptions);
                 this.books = await response.json();
