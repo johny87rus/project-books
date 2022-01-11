@@ -1,7 +1,12 @@
 const app = Vue.createApp({
-    data: function () {
+    data() {
         return {
             books: loadBooks()
+        }
+    },
+    methods: {
+        getBooks() {
+            this.books = loadBooks();
         }
     }
 })
