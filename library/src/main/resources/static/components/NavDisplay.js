@@ -30,6 +30,12 @@ app.component('nav-display', {
     methods: {
         goHome() {
             this.$emit('go-home');
+        },
+        addBook() {
+            this.$emit('add-book');
+        },
+        deleteBook() {
+            this.$emit('delete-book');
         }
     }
 })

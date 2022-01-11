@@ -16,8 +16,10 @@
 </head>
 <body>
 <div id="app">
-    <nav-display @go-home="updateBooks"></nav-display>
-    <books-display :books="books"></books-display>
+    <nav-display v-if="!addBookEnabled && !deleteBookEnabled" @go-home="updateBooks" @add-book="addBook" @delete-book="deleteBook"></nav-display>
+    <books-display v-if="!addBookEnabled && !deleteBookEnabled" :books="books"></books-display>
+    <add-book-display v-if="addBookEnabled" @book-saved="bookSaved" @book-cancel="addBookCancel"></add-book-display>
+    <delete-book-display v-if="deleteBookEnabled" @book-deleted="bookDeleted" @book-cancel="deleteBookCancel"></delete-book-display>
 </div>
 <!-- Import App -->
 <script src="./js/main.js"></script>
@@ -25,6 +27,10 @@
 <script src="./components/NavDisplay.js"></script>
 <!-- Import Books component -->
 <script src="./components/BooksDisplay.js"></script>
+<!-- Import Add book component -->
+<script src="./components/AddBook.js"></script>
+<!-- Import Delete book component -->
+<script src="./components/DeleteBook.js"></script>
 <!-- Mount App -->
 <script>const mountedApp = app.mount('#app');</script>
 </body>
