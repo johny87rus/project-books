@@ -5,7 +5,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.User;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
@@ -50,12 +50,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         var userDetailService = new InMemoryUserDetailsManager();
         var user = User.withUsername("evgenii")
-                .password("test")
+                .password("$2a$12$XUmcAD.cbCo9qM9LDO6Tmuq5/63wQrRjBiMslth68wcUtyldGYVX6")
                 .authorities("read")
                 .build();
         userDetailService.createUser(user);
 
-        auth.userDetailsService(userDetailService).passwordEncoder(NoOpPasswordEncoder.getInstance());
+        auth.userDetailsService(userDetailService).passwordEncoder(new BCryptPasswordEncoder());
 //        Еще вариант :
 //        auth.inMemoryAuthentication()
 //                    .withUser("evgenii")
