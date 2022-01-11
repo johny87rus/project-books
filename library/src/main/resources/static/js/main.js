@@ -1,16 +1,16 @@
 const app = Vue.createApp({
     data() {
-        return {
-            books: []
-        }
+         return {
+             books: []
+         }
     },
     methods: {
-        async getBooks() {
+        async updateBooks() {
             const response = await fetch("/books");
             this.books = await response.json();
         }
     },
     beforeMount(){
-        this.getBooks()
-    }
+        this.updateBooks()
+    },
 })
