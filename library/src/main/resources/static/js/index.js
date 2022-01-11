@@ -1,26 +1,16 @@
 const app = Vue.createApp({
     data() {
         return {
-            books: loadBooks()
+            books: []
         }
     },
     methods: {
-        getBooks() {
-            this.books = loadBooks();
+        async getBooks() {
+            const response = await fetch("/books");
+            this.books = await response.json();
         }
+    },
+    beforeMount(){
+        this.getBooks()
     }
 })
-
-const getResource = async (url) => {
-    const res = await fetch(url);
-    if (!res.ok) {
-        throw new Error(`Could not fetch ${url}, status: ${res.status}`);
-    }
-    return await res.json();
-};
-
-const loadBooks = () => {
-    let books = [];
-    getResource('/books').then(data => data.forEach(book => books.push(book)));
-    return books;
-}
