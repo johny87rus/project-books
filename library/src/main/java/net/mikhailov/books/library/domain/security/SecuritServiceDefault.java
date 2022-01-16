@@ -25,7 +25,7 @@ import java.util.Optional;
 public class SecuritServiceDefault implements SecurityService {
     private final AuthorityRepository authorityRepository;
     private final UserRepository userRepository;
-    private static final String ADMIN_NAME = "admin";
+    public static final String ADMIN_NAME = "admin";
 
     /**
      * {@inheritDoc}
