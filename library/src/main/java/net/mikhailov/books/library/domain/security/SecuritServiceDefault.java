@@ -7,8 +7,10 @@ import net.mikhailov.books.library.domain.security.authority.AuthorityType;
 import net.mikhailov.books.library.domain.security.user.User;
 import net.mikhailov.books.library.domain.security.user.UserDetailsDecorator;
 import net.mikhailov.books.library.domain.security.user.UserRepository;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -26,6 +28,10 @@ public class SecuritServiceDefault implements SecurityService {
     private final AuthorityRepository authorityRepository;
     private final UserRepository userRepository;
     public static final String ADMIN_NAME = "admin";
+    private final PasswordEncoder encoder;
+
+    @Value("#{environment.ADMIN_PASS}:admin")
+    private String password;
 
     /**
      * {@inheritDoc}
@@ -36,7 +42,7 @@ public class SecuritServiceDefault implements SecurityService {
         Optional<User> foundAdmin = userRepository.findUserByName(ADMIN_NAME);
         User admin;
         if (foundAdmin.isEmpty()) {
-            var adminEntity = new User().setName(ADMIN_NAME).setPassword("$2a$12$bi/vUjC5NcQLyfeEO7W2cOAhc52fFpYJ0Yz.f8O4RyWDlTw/tV0xS");
+            var adminEntity = new User().setName(ADMIN_NAME).setPassword(encoder.encode(password));
             admin = userRepository.save(adminEntity);
         } else {
             admin = foundAdmin.get();

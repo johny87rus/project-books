@@ -13,3 +13,8 @@ server:
 spring:
   datasource:
     url: jdbc:tc:postgresql:13-alpine:///
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG
