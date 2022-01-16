@@ -1,0 +1,69 @@
+databaseChangeLog:
+  - changeSet:
+      id: 11
+      author: emikhailov
+      comment: Create table Users
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: password
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+        - createSequence:
+            sequenceName: users_seq
+            incrementBy: 1
+            cycle: false
+            maxValue: 1000000000
+            minValue: 1000
+  - changeSet:
+      id: 12
+      author: emikhailov
+      comment: Create table Authorities
+      changes:
+        - createTable:
+            tableName: authorities
+            columns:
+              - column:
+                  name: id
+                  type: int
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: authority_type
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+        - createSequence:
+            sequenceName: authorities_seq
+            incrementBy: 1
+            cycle: false
+            maxValue: 1000000000
+            minValue: 1000
+        - createTable:
+            tableName: user_authorities
+            columns:
+              - column:
+                  name: authority_id
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: int
+                  constraints:
+                    nullable: false
