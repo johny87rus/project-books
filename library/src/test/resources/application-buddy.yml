@@ -1,3 +1,5 @@
 spring:
   datasource:
-    url: jdbc:postgresql:13-alpine:///
+    url: jdbc:postgresql://postgres:5432/test
+    username: postgres
+    password: postgres
