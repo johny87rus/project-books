@@ -27,6 +27,10 @@ public abstract class AbstractTest {
     }
 
     protected RequestSpecification getRestAssuredAuthentificated() {
+
+        /**
+         * TEST PIPELINE
+         */
         var sessionId = given().auth().preemptive().basic("admin", password).contentType(ContentType.JSON).
                 when().get("/").
                 then().log().all().extract().response().getSessionId();
