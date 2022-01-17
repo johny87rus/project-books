@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Дефолтная реализация
@@ -59,6 +60,7 @@ public class SecuritServiceDefault implements SecurityService {
         }
 
         admin.setAuthorities(authorities);
+        authorities.forEach(it -> it.setUsers(Set.of(admin)));
     }
 
     /**
