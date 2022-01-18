@@ -15,7 +15,7 @@ import static io.restassured.RestAssured.given;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @WithMockUser(SecuritServiceDefault.ADMIN_NAME)
 public abstract class AbstractTest {
-    @Value("#{environment.ADMIN_PASS}:admin")
+    @Value("#{environment.ADMIN_PASS}admin")
     private String password;
 
     @LocalServerPort

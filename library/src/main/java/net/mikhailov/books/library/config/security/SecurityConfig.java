@@ -21,8 +21,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()); //Включаем CSRF в Cookie
         http.formLogin().and().logout().deleteCookies("JSESSIONID");
         http.authorizeRequests()
-                .mvcMatchers(HttpMethod.POST,"/api/v1/**").hasAuthority(AuthorityType.ADMIN.name())
-                .mvcMatchers(HttpMethod.DELETE,"/api/v1/**").hasAuthority(AuthorityType.ADMIN.name())
+                .mvcMatchers(HttpMethod.POST,"/api/v1/**").hasRole(AuthorityType.ROLE_ADMIN.getRole())
+                .mvcMatchers(HttpMethod.DELETE,"/api/v1/**").hasRole(AuthorityType.ROLE_ADMIN.getRole())
                 .anyRequest().permitAll();
     }
 

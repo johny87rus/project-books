@@ -31,7 +31,7 @@ public class SecuritServiceDefault implements SecurityService {
     public static final String ADMIN_NAME = "admin";
     private final PasswordEncoder encoder;
 
-    @Value("#{environment.ADMIN_PASS}:admin")
+    @Value("#{environment.ADMIN_PASS}admin")
     private String password;
 
     /**
@@ -50,15 +50,12 @@ public class SecuritServiceDefault implements SecurityService {
         }
 
         var authorities = new HashSet<Authority>();
-        for (AuthorityType type : AuthorityType.values()) {
-            var foundAuthority = authorityRepository.findAuthorityByAuthorityType(type);
-            if (foundAuthority.isEmpty()) {
-                authorities.add(authorityRepository.save(new Authority().setAuthorityType(type)));
-            } else {
-                authorities.add(foundAuthority.get());
-            }
+        var foundAuthority = authorityRepository.findAuthorityByAuthorityType(AuthorityType.ROLE_ADMIN);
+        if (foundAuthority.isEmpty()) {
+            authorities.add(authorityRepository.save(new Authority().setAuthorityType(AuthorityType.ROLE_ADMIN)));
+        } else {
+            authorities.add(foundAuthority.get());
         }
-
         admin.setAuthorities(authorities);
         authorities.forEach(it -> it.setUsers(Set.of(admin)));
     }
