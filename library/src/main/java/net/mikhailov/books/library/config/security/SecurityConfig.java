@@ -17,6 +17,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+//        //Разрешаем CORS GET запросы с origin library.mikhailov.net
+//        http.cors(c -> {
+//            CorsConfigurationSource corsConfig = req -> {
+//                var config = new CorsConfiguration();
+//                config.setAllowedOrigins(List.of("https://library.mikhailov.net"));
+//                config.setAllowedMethods(List.of("GET"));
+//                return config;
+//            };
+//            c.configurationSource(corsConfig);
+//        });
         http.httpBasic();
         http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()); //Включаем CSRF в Cookie
         http.formLogin().and().logout().deleteCookies("JSESSIONID");
