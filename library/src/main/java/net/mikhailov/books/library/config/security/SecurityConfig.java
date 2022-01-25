@@ -15,6 +15,7 @@ import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final AuthenticationProvider authenticationProvider;
 
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 //        //Разрешаем CORS GET запросы с origin library.mikhailov.net
@@ -28,6 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //            c.configurationSource(corsConfig);
 //        });
         http.httpBasic();
+        http.oauth2Login();
         http.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse()); //Включаем CSRF в Cookie
         http.formLogin().and().logout().deleteCookies("JSESSIONID");
         http.authorizeRequests()
