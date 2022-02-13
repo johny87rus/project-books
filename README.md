@@ -2,11 +2,15 @@
 
 A pet-project with books that interest me
 
-https://library.mikhailov.net
+[Live demo](https://library.mikhailov.net);
+[Swagger UI](https://library.mikhailov.net/api/v1/swagger-ui)
+
 
 #### Technologies
 
-Spring Boot, PostgreSQL, Vue3, k8s.
+Spring Boot (Data, Security), OpenAPI, PostgreSQL, Vue3.
+
+Infrastructure : kubernetes, docker, [buddy](https://buddy.works)
 
 #### Installation
 
