@@ -20,7 +20,7 @@ public class SwaggerAPIController {
     public Object getApi() throws IOException {
         Resource resource = new ClassPathResource("/openapi/openapi.yaml");
         ObjectMapper yamlReader = new ObjectMapper(new YAMLFactory());
-        Object obj = yamlReader.readValue(resource.getFile(), Object.class);
+        Object obj = yamlReader.readValue(resource.getInputStream(), Object.class);
         ObjectMapper jsonWriter = new ObjectMapper();
         return jsonWriter.writeValueAsString(obj);
     }
