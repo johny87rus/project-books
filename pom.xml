@@ -1,0 +1,11 @@
+<project>
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>net.mikhailov.books</groupId>
+    <artifactId>project-books</artifactId>
+    <version>1</version>
+
+    <packaging>pom</packaging>
+    <modules>
+        <module>library</module>
+    </modules>
+</project>
