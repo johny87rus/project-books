@@ -23,6 +23,10 @@ spring:
     admin:
       client:
         url: http://admin.spring-boot-admin:8080
+        instance:
+          management-url: http://library.library:8080/actuator
+          health-url: http://library.library:8080/actuator/health
+          service-url: http://library.library:8080
   application:
     name: library
 
