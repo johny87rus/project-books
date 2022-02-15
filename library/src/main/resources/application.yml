@@ -26,7 +26,7 @@ spring:
         instance:
           management-url: http://library.library:8080/actuator
           health-url: http://library.library:8080/actuator/health
-          service-url: http://library.library:8080
+          service-url: https://library.mikhailov.net
   application:
     name: library
 
