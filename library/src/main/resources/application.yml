@@ -19,4 +19,9 @@ management:
           - health
           - metrics
           - liquebase
+spring:
+  boot:
+    admin:
+      client:
+        url: http://admin.spring-boot-admin:8080
 
