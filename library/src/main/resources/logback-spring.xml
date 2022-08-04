@@ -1,0 +1,29 @@
+<configuration>
+
+    <logger name="net.mikhailov.books" level="debug"/>
+    <logger name="org.springframework.security.web.authentication.www" level="debug"/>
+
+    <springProperty name="APPNAME" source="logstash.appname"/>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%X{sid} %date{HH:mm:ss.SSS} %level %thread %logger %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="JSON_STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+            <customFields>{"appname":"${APPNAME}"}</customFields>
+        </encoder>
+    </appender>
+
+    <root level="info">
+        <springProfile name="!k8s">
+            <appender-ref ref="STDOUT"/>
+        </springProfile>
+        <springProfile name="k8s">
+            <appender-ref ref="JSON_STDOUT"/>
+        </springProfile>
+    </root>
+
+</configuration>
