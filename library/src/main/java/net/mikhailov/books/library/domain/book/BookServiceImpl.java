@@ -5,6 +5,7 @@ import net.mikhailov.books.library.domain.author.Author;
 import net.mikhailov.books.library.domain.author.AuthorService;
 import net.mikhailov.books.library.domain.isbnqueue.providers.BookProvider;
 import net.mikhailov.books.model.ISBNResultList;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -29,7 +30,7 @@ public class BookServiceImpl implements BookService {
      */
     @Override
     public List<Book> getAllBooks() {
-        return repository.findAll();
+        return repository.findAll(Sort.by("id"));
     }
 
     /**
