@@ -23,8 +23,8 @@ junit:
   script:
     - mvn clean verify -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository
 
-pull to registry:
-  image: docker:20.10.19-dind
+push to registry:
+  image: maven:3.8.6-openjdk-18
   stage: build
   script:
     - mvn clean spring-boot:build-image -DskipTests -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository
