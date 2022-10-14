@@ -21,15 +21,3 @@ build-job:
   stage: build
   script:
     - mvn -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository clean verify
-
-
-
-deploy-job:
-  image: bitnami/kubectl:1.24
-  stage: deploy
-  script:
-    - id
-    # - kubectl config set-cluster my-cluster-name --server=https://192.168.0.5:6443 --insecure-skip-tls-verify=true
-    # - kubectl config set-credentials user --token=$k8s_token
-    # - kubectl config set-context --current --namespace=library
-    # - kubectl get pods
