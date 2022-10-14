@@ -13,11 +13,18 @@ services:
   - name: docker:dind
 
 stages:
+  - test
   - build
   - deploy
 
-build-job:
+junit:
   image: maven:3.8.6-openjdk-18
+  stage: test
+  script:
+    - mvn clean verify -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository
+
+pull to registry:
+  image: docker:20.10.19-dind
   stage: build
   script:
-    - mvn -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository clean verify
+    - mvn clean spring-boot:build-image -DskipTests -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository
