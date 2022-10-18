@@ -3,12 +3,6 @@ cache:
   paths:
     - $CI_PROJECT_DIR/.m2/repository
 
-variables:
-  DOCKER_HOST: tcp://localhost:2375
-  DOCKER_TLS_CERTDIR: ""
-  TESTCONTAINERS_HOST_OVERRIDE: "localhost"
-
-
 services:
   - name: docker:dind
 
@@ -18,6 +12,7 @@ stages:
   - deploy
 
 junit:
+  extends: [.docker]
   artifacts:
     paths:
       - "*/target/*-spring-boot.jar"
@@ -27,7 +22,18 @@ junit:
     - mvn clean verify -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository
 
 push to registry:
-  image: maven:3.8.6-openjdk-18
+  extends: [.docker]
+  image: docker:latest
   stage: build
   script:
-    - mvn clean spring-boot:build-image -DskipTests -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository
+    - cd library
+    - sleep 2
+    - docker image build -f Dockerfile -t registry.mikhailov.net/library:latest .
+    - docker push registry.mikhailov.net/library:latest
+
+
+.docker:
+  variables:
+    DOCKER_HOST: tcp://localhost:2375
+    DOCKER_TLS_CERTDIR: ""
+    TESTCONTAINERS_HOST_OVERRIDE: "localhost"
