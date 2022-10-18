@@ -27,7 +27,7 @@ push to registry:
   stage: build
   script:
     - cd library
-    - sleep 2
+    - sleep 3
     - docker image build -f Dockerfile -t registry.mikhailov.net/library:latest .
     - docker push registry.mikhailov.net/library:latest
 
