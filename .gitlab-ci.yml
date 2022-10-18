@@ -12,7 +12,7 @@ stages:
   - deploy
 
 junit:
-  extends: [.docker]
+  extends: [ .docker ]
   artifacts:
     paths:
       - "*/target/*-spring-boot.jar"
@@ -22,15 +22,27 @@ junit:
     - mvn clean verify -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository
 
 push to registry:
-  extends: [.docker]
+  extends: [ .docker ]
   image: docker:latest
   stage: build
   script:
     - cd library
-    - sleep 3
+    - sleep 4
     - docker image build -f Dockerfile -t registry.mikhailov.net/library:latest .
     - docker push registry.mikhailov.net/library:latest
 
+deploy to kubernetes:
+  image: bitnami/kubectl:1.24
+  stage: deploy
+  variables:
+    K8S_TOKEN: $K8S_TOKEN
+  script:
+    - kubectl config set-cluster "k8s.mikhailov.net" --server=https://192.168.0.5:6443  --insecure-skip-tls-verify
+    - kubectl config set-credentials user --token=$K8S_TOKEN
+    - kubectl config set-context "local" --cluster="k8s.mikhailov.net" --user="user"
+    - kubectl config use-context "local"
+    - kubectl config set-context --current --namespace=library
+    - kubectl rollout restart deployment library
 
 .docker:
   variables:
