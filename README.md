@@ -10,7 +10,7 @@ A pet-project with books that interest me
 
 Spring Boot (Data, Security), OpenAPI, PostgreSQL, Vue3.
 
-Infrastructure : kubernetes, docker, [buddy](https://buddy.works)
+Infrastructure : kubernetes, docker
 
 #### Installation
 
