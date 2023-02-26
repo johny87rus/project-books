@@ -1,0 +1,9 @@
+kind: pipeline
+type: kubernetes
+name: default
+
+steps:
+  - name: greeting
+    image: maven:3.8.6-openjdk-18
+    commands:
+      - mvn clean verify -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository
