@@ -16,14 +16,18 @@ junit:
   artifacts:
     paths:
       - "*/target/*-spring-boot.jar"
-  image: maven:3.8.6-openjdk-18
+  image:
+    name: maven:3.8.6-openjdk-18
+    pull_policy: if-not-present
   stage: test
   script:
     - mvn clean verify -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository
 
 push to registry:
   extends: [ .docker ]
-  image: docker:latest
+  image:
+    name: docker:latest
+    pull_policy: if-not-present
   stage: build
   script:
     - cd library
@@ -32,7 +36,9 @@ push to registry:
     - docker push registry.mikhailov.net/library:latest
 
 deploy to kubernetes:
-  image: bitnami/kubectl:1.24
+  image:
+    name: bitnami/kubectl:1.24
+    pull_policy: if-not-present
   stage: deploy
   variables:
     K8S_TOKEN: $K8S_TOKEN
