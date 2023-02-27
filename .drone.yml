@@ -1,9 +1,61 @@
+---
 kind: pipeline
 type: kubernetes
 name: default
 
 steps:
-  - name: greeting
+  - name: restore-m2-cache
+    image: plugins/s3-cache
+    pull: if-not-exists
+    settings:
+      pull: true
+      path: cache
+      filename: project-books-m2.tar
+      endpoint: http://s3-minio.gitlab.svc.cluster.local:9000
+      workdir: m2
+      access_key:
+        from_secret: S3AccessKey
+      secret_key:
+        from_secret: S3SecretKey
+      restore: true
+
+  - name: build
     image: maven:3.8.6-openjdk-18
+    pull: if-not-exists
     commands:
-      - mvn clean verify -Dmaven.repo.local=$CI_PROJECT_DIR/.m2/repository
+      - mvn clean verify -Dmaven.repo.local=m2
+    volumes:
+      - name: dockersock
+        path: /var/run
+
+  - name: rebuild-m2-cache
+    image: plugins/s3-cache
+    pull: if-not-exists
+    settings:
+      rebuild: true
+      path: cache
+      filename: project-books-m2.tar
+      endpoint: http://s3-minio.gitlab.svc.cluster.local:9000
+      workdir: m2
+      mount: m2
+      access_key:
+        from_secret: S3AccessKey
+      secret_key:
+        from_secret: S3SecretKey
+
+
+
+services:
+  - name: docker
+    image: docker:dind
+    entrypoint:
+      - dockerd --registry-mirror http://registry-mirror-ui.registry.svc.cluster.local
+    privileged: true
+    volumes:
+      - name: dockersock
+        path: /var/run
+
+volumes:
+  - name: dockersock
+    temp: {}
+
