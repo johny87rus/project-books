@@ -189,6 +189,18 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <executions>
                     <execution>
+                        <id>Add properties</id>
+                        <goals>
+                            <goal>build-info</goal>
+                        </goals>
+                        <configuration>
+                            <additionalProperties>
+                                <commit.sha>${env.CI_COMMIT_SHA}</commit.sha>
+                            </additionalProperties>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>Repackage</id>
                         <goals>
                             <goal>repackage</goal>
                         </goals>
