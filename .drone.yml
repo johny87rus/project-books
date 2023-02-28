@@ -24,6 +24,7 @@ steps:
     image: maven:3.8.6-openjdk-18
     pull: if-not-exists
     commands:
+#      - mvn clean install -DskipTests -Ddependency-check.skip=true -Dmaven.repo.local=m2 #fast build for debug
       - mvn clean verify -Dmaven.repo.local=m2
     volumes:
       - name: dockersock
@@ -46,20 +47,20 @@ steps:
         from_secret: S3SecretKey
 
   - name: build-image
-    image: plugins/docker
+    image: docker:dind
+    pull: if-not-exists
     when:
       event:
         - push
       branch:
         - master
-    settings:
-      registry: registry-ui.registry.svc.cluster.local
-      insecure: true
-      mirror: http://registry-mirror-ui.registry.svc.cluster.local
-      context: library
-      repo: registry-ui.registry.svc.cluster.local/library
-      tags: ${CI_COMMIT_SHA}
-      dockerfile: library/Dockerfile
+    commands:
+      - cd library
+      - docker image build -f Dockerfile -t registry-ui.registry.svc.cluster.local/library:${CI_COMMIT_SHA} .
+      - docker push registry-ui.registry.svc.cluster.local/library:${CI_COMMIT_SHA}
+    volumes:
+      - name: dockersock
+        path: /var/run
 
   - name: deploy
     image: bitnami/kubectl:1.24
@@ -84,7 +85,7 @@ services:
   - name: docker-service
     image: docker:dind
     entrypoint:
-      - dockerd --registry-mirror http://registry-mirror-ui.registry.svc.cluster.local
+      - dockerd --registry-mirror http://registry-mirror-ui.registry.svc.cluster.local --insecure-registry registry-ui.registry.svc.cluster.local
     privileged: true
     volumes:
       - name: dockersock
