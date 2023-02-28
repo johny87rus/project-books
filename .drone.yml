@@ -26,6 +26,7 @@ steps:
       DOCKER_HOST: tcp://localhost:2375
       DOCKER_TLS_CERTDIR: ""
       TESTCONTAINERS_HOST_OVERRIDE: "localhost"
+      TESTCONTAINERS_RYUK_DISABLED: true
     pull: if-not-exists
     commands:
 #      - mvn clean install -DskipTests -Ddependency-check.skip=true -Dmaven.repo.local=m2 #fast build for debug
