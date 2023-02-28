@@ -7,6 +7,7 @@ steps:
   - name: restore-m2-cache
     image: plugins/s3-cache
     pull: if-not-exists
+    failure: ignore
     settings:
       pull: true
       path: cache
@@ -31,6 +32,7 @@ steps:
   - name: rebuild-m2-cache
     image: plugins/s3-cache
     pull: if-not-exists
+    failure: ignore
     settings:
       rebuild: true
       path: cache
@@ -43,10 +45,43 @@ steps:
       secret_key:
         from_secret: S3SecretKey
 
+  - name: build-image
+    image: plugins/docker
+    when:
+      event:
+        - push
+      branch:
+        - master
+    settings:
+      registry: registry-ui.registry.svc.cluster.local
+      insecure: true
+      mirror: http://registry-mirror-ui.registry.svc.cluster.local
+      context: library
+      repo: registry-ui.registry.svc.cluster.local/library
+      tags: ${CI_COMMIT_SHA}
+      dockerfile: library/Dockerfile
 
+  - name: deploy
+    image: bitnami/kubectl:1.24
+    pull: if-not-exists
+    when:
+      event:
+        - push
+      branch:
+        - master
+    environment:
+      K8S_TOKEN:
+        from_secret: k8sToken
+    commands:
+      - kubectl config set-cluster "k8s.mikhailov.net" --server=https://192.168.0.5:6443  --insecure-skip-tls-verify
+      - kubectl config set-credentials user --token=$K8S_TOKEN
+      - kubectl config set-context "local" --cluster="k8s.mikhailov.net" --user="user"
+      - kubectl config use-context "local"
+      - kubectl config set-context --current --namespace=library
+      - kubectl set image deployment/library library=registry.mikhailov.net/library:${CI_COMMIT_SHA}
 
 services:
-  - name: docker
+  - name: docker-service
     image: docker:dind
     entrypoint:
       - dockerd --registry-mirror http://registry-mirror-ui.registry.svc.cluster.local

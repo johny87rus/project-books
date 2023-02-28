@@ -21,4 +21,4 @@ Required : java 17
 Then browse to localhost:8080
 
 #### Pipeline
-[![pipeline](https://gitlab.mikhailov.net/evgenii/library/badges/master/pipeline.svg "pipeline")](https://library.mikhailov.net)
+[![Build Status](https://drone.mikhailov.net/api/badges/evgenii/project-books/status.svg?ref=refs/heads/master)](https://drone.mikhailov.net/evgenii/project-books)
