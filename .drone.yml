@@ -22,6 +22,10 @@ steps:
 
   - name: build
     image: maven:3.8.6-openjdk-18
+    environment:
+      DOCKER_HOST: tcp://localhost:2375
+      DOCKER_TLS_CERTDIR: ""
+      TESTCONTAINERS_HOST_OVERRIDE: "localhost"
     pull: if-not-exists
     commands:
 #      - mvn clean install -DskipTests -Ddependency-check.skip=true -Dmaven.repo.local=m2 #fast build for debug
@@ -49,9 +53,11 @@ steps:
   - name: build-image
     image: docker:dind
     pull: if-not-exists
+    environment:
+      DOCKER_HOST: tcp://localhost:2375
+      DOCKER_TLS_CERTDIR: ""
+      TESTCONTAINERS_HOST_OVERRIDE: "localhost"
     when:
-      event:
-        - push
       branch:
         - master
     commands:
@@ -62,12 +68,28 @@ steps:
       - name: dockersock
         path: /var/run
 
+services:
+  - name: docker-service
+    image: docker:dind
+    entrypoint:
+      - dockerd --registry-mirror http://registry-mirror-ui.registry.svc.cluster.local --insecure-registry registry-ui.registry.svc.cluster.local -H tcp://0.0.0.0:2375 --tls=false
+    privileged: true
+
+trigger:
+  event:
+    exclude:
+      - promote
+
+---
+kind: pipeline
+type: kubernetes
+name: deploy
+
+steps:
   - name: deploy
     image: bitnami/kubectl:1.24
     pull: if-not-exists
     when:
-      event:
-        - push
       branch:
         - master
     environment:
@@ -81,17 +103,8 @@ steps:
       - kubectl config set-context --current --namespace=library
       - kubectl set image deployment/library library=registry.mikhailov.net/library:${CI_COMMIT_SHA}
 
-services:
-  - name: docker-service
-    image: docker:dind
-    entrypoint:
-      - dockerd --registry-mirror http://registry-mirror-ui.registry.svc.cluster.local --insecure-registry registry-ui.registry.svc.cluster.local
-    privileged: true
-    volumes:
-      - name: dockersock
-        path: /var/run
-
-volumes:
-  - name: dockersock
-    temp: {}
-
+trigger:
+  event:
+    - promote
+  target:
+    - production
