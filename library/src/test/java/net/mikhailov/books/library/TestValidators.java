@@ -1,10 +1,10 @@
 package net.mikhailov.books.library;
 
+import jakarta.validation.ConstraintViolation;
 import net.mikhailov.books.library.validators.ValidGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.beanvalidation.SpringValidatorAdapter;
 
-import javax.validation.ConstraintViolation;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

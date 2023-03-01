@@ -1,10 +1,10 @@
 package net.mikhailov.books.library.domain.book;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import net.mikhailov.books.library.domain.author.Author;
 
-import javax.persistence.*;
 import java.util.Set;
 
 @Entity

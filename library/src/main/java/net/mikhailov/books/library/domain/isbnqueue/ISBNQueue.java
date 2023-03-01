@@ -1,9 +1,8 @@
 package net.mikhailov.books.library.domain.isbnqueue;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-
-import javax.persistence.*;
 
 /**
  * @author Mikhailov Evgenii

@@ -1,9 +1,8 @@
 package net.mikhailov.books.library.domain.author;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.validation.annotation.Validated;
-
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 
 /**
  * Фабрика по созданию авторов

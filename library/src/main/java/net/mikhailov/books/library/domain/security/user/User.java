@@ -1,11 +1,11 @@
 package net.mikhailov.books.library.domain.security.user;
 
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import net.mikhailov.books.library.domain.security.authority.Authority;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
 

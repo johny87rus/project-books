@@ -1,11 +1,11 @@
 package net.mikhailov.books.library.domain.author;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import net.mikhailov.books.library.validators.ValidGroup;
 import org.springframework.validation.annotation.Validated;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Positive;
 import java.util.List;
 import java.util.Optional;
 

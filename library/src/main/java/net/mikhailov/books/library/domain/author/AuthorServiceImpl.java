@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import net.mikhailov.books.library.exceptions.AuthorNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 

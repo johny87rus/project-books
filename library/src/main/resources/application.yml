@@ -3,7 +3,7 @@ springdoc:
       urls:
         - url: /api/v1/api
           name: original
-      path: /api/v1/swagger-ui
+      path: /api/v1/index.html
       config-url: /v3/api-docs/swagger-config
     api-docs:
       enabled: false

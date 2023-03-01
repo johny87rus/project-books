@@ -3,7 +3,7 @@
 A pet-project with books that interest me
 
 [Live demo](https://library.mikhailov.net);
-[Swagger UI](https://library.mikhailov.net/api/v1/swagger-ui)
+[Swagger UI](https://library.mikhailov.net/api/v1/swagger-ui/index.html)
 
 
 #### Technologies

@@ -37,8 +37,13 @@ import org.springframework.http.codec.multipart.Part;
 {{/reactive}}
 
 {{#useBeanValidation}}
-import javax.validation.Valid;
-import javax.validation.constraints.*;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.*;
+import jakarta.annotation.Generated;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+
 {{/useBeanValidation}}
 import java.util.List;
 import java.util.Map;

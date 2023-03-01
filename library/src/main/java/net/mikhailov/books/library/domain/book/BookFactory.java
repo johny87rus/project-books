@@ -1,7 +1,7 @@
 package net.mikhailov.books.library.domain.book;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 
 /**
  * Фабрика по созданию книг

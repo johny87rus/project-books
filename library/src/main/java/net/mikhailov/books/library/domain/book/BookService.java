@@ -1,8 +1,8 @@
 package net.mikhailov.books.library.domain.book;
 
+import jakarta.validation.constraints.NotNull;
 import net.mikhailov.books.model.ISBNResultList;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public interface BookService {
