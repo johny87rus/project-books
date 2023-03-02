@@ -12,7 +12,7 @@ info:
     url: https://www.apache.org/licenses/LICENSE-2.0.html
 servers:
   - description: production
-    url: https://library.mikhailov.net/api/v1/
+    url: https://api.library.mikhailov.net/api/v1/
   - description: localhost
     url: /api/v1
 paths:
