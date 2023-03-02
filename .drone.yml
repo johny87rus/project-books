@@ -102,7 +102,7 @@ steps:
       - kubectl config set-context "local" --cluster="k8s.mikhailov.net" --user="user"
       - kubectl config use-context "local"
       - kubectl config set-context --current --namespace=library
-      - kubectl set image deployment/library library=registry.mikhailov.net/library:${CI_COMMIT_SHA}
+      - kubectl set image deployment/library library=registry-ui.registry.svc.cluster.local/library:${CI_COMMIT_SHA}
 
 trigger:
   event:
