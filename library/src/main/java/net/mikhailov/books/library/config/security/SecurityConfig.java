@@ -8,11 +8,21 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.List;
+
+import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 @RequiredArgsConstructor
+@EnableWebSecurity
 public class SecurityConfig {
+
     private final AuthenticationProvider authenticationProvider;
 
     @Bean
@@ -22,6 +32,7 @@ public class SecurityConfig {
         http.authenticationManager(authenticationManagerBuilder.build());
 
         http.httpBasic();
+        http.cors(withDefaults());
         http.oauth2Login();
         //Временно отключил csrf
         http.csrf().disable();
@@ -32,5 +43,16 @@ public class SecurityConfig {
                 .anyRequest().permitAll();
         return http.build();
     }
+
+
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of("https://library.mikhailov.net"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/api/v1/*", configuration);
+        return source;
+    }
+
 
 }
