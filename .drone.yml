@@ -96,7 +96,7 @@ services:
   - name: docker-service
     image: docker:dind
     entrypoint:
-      - dockerd --registry-mirror http://registry-mirror-http.registry.svc.cluster.local --insecure-registry registry-http.registry.svc.cluster.local -H tcp://0.0.0.0:2375 --tls=false
+      - dockerd --registry-mirror https://registry-mirror.mikhailov.net --insecure-registry registry-http.registry.svc.cluster.local -H tcp://0.0.0.0:2375 --tls=false
     privileged: true
 
 trigger:
