@@ -66,8 +66,8 @@ steps:
           - pull_request
     commands:
       - cd library
-      - docker image build -f Dockerfile -t registry-ui.registry.svc.cluster.local/library:${CI_COMMIT_SHA} .
-      - docker push registry-ui.registry.svc.cluster.local/library:${CI_COMMIT_SHA}
+      - docker image build -f Dockerfile -t registry-http.registry.svc.cluster.local/library:${CI_COMMIT_SHA} .
+      - docker push registry-http.registry.svc.cluster.local/library:${CI_COMMIT_SHA}
     volumes:
       - name: dockersock
         path: /var/run
@@ -90,13 +90,13 @@ steps:
       - kubectl config set-context "local" --cluster="k8s.mikhailov.net" --user="user"
       - kubectl config use-context "local"
       - kubectl config set-context --current --namespace=library
-      - kubectl set image deployment/library library=registry-ui.registry.svc.cluster.local/library:${CI_COMMIT_SHA}
+      - kubectl set image deployment/library library=registry-http.registry.svc.cluster.local/library:${CI_COMMIT_SHA}
 
 services:
   - name: docker-service
     image: docker:dind
     entrypoint:
-      - dockerd --registry-mirror http://registry-mirror-ui.registry.svc.cluster.local --insecure-registry registry-ui.registry.svc.cluster.local -H tcp://0.0.0.0:2375 --tls=false
+      - dockerd --registry-mirror http://registry-mirror-ui.registry.svc.cluster.local --insecure-registry registry-http.registry.svc.cluster.local -H tcp://0.0.0.0:2375 --tls=false
     privileged: true
 
 trigger:
@@ -125,7 +125,7 @@ steps:
       - kubectl config set-context "local" --cluster="k8s.mikhailov.net" --user="user"
       - kubectl config use-context "local"
       - kubectl config set-context --current --namespace=library
-      - kubectl set image deployment/library library=registry-ui.registry.svc.cluster.local/library:${CI_COMMIT_SHA}
+      - kubectl set image deployment/library library=registry-http.registry.svc.cluster.local/library:${CI_COMMIT_SHA}
 
 trigger:
   event:
