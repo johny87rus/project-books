@@ -61,6 +61,9 @@ steps:
     when:
       branch:
         - master
+      event:
+        exclude:
+          - pull_request
     commands:
       - cd library
       - docker image build -f Dockerfile -t registry-ui.registry.svc.cluster.local/library:${CI_COMMIT_SHA} .
