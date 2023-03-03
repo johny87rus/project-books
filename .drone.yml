@@ -29,7 +29,7 @@ steps:
       TESTCONTAINERS_RYUK_DISABLED: true
     pull: if-not-exists
     commands:
-#      - mvn clean install -DskipTests -Ddependency-check.skip=true -Dmaven.repo.local=m2 #fast build for debug
+#      - mvn clean install -DskipTests -Ddependency-check.skip=true -Dmaven.repo.local=m2 #fast build for debug2
       - mvn clean verify -Dmaven.repo.local=m2
 
   - name: rebuild-m2-cache
