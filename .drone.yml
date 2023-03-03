@@ -72,6 +72,26 @@ steps:
       - name: dockersock
         path: /var/run
 
+  - name: deploy
+    image: bitnami/kubectl:1.24
+    pull: if-not-exists
+    when:
+      branch:
+        - master
+      event:
+        exclude:
+          - pull_request
+    environment:
+      K8S_TOKEN:
+        from_secret: k8sToken
+    commands:
+      - kubectl config set-cluster "k8s.mikhailov.net" --server=https://192.168.0.5:6443  --insecure-skip-tls-verify
+      - kubectl config set-credentials user --token=$K8S_TOKEN
+      - kubectl config set-context "local" --cluster="k8s.mikhailov.net" --user="user"
+      - kubectl config use-context "local"
+      - kubectl config set-context --current --namespace=library
+      - kubectl set image deployment/library library=registry-ui.registry.svc.cluster.local/library:${CI_COMMIT_SHA}
+
 services:
   - name: docker-service
     image: docker:dind
