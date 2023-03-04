@@ -1,6 +1,6 @@
 ---
 kind: pipeline
-type: kubernetes
+type: docker
 name: default
 
 steps:
@@ -21,16 +21,23 @@ steps:
       restore: true
 
   - name: build
-    image: maven:3.8.6-openjdk-18
+    image: quay.io/testcontainers/dind-drone-plugin
     environment:
-      DOCKER_HOST: tcp://localhost:2375
-      DOCKER_TLS_CERTDIR: ""
-      TESTCONTAINERS_HOST_OVERRIDE: "localhost"
       TESTCONTAINERS_RYUK_DISABLED: true
-    pull: if-not-exists
-    commands:
-#      - mvn clean install -DskipTests -Ddependency-check.skip=true -Dmaven.repo.local=m2 #fast build for debug2
-      - mvn clean verify -Dmaven.repo.local=m2
+      CI_WORKSPACE: "/drone/src"
+    settings:
+      # This specifies the command that should be executed to perform build, test and
+      #  integration tests. Not to be confused with Drone's `command`:
+      cmd: sleep 5 && mvn clean verify -Dmaven.repo.local=m2
+      # This image will run the cmd with your build steps
+      build_image: maven:3.8.6-openjdk-18
+      # Not mandatory; enables pre-fetching of images in parallel with the build, so may save
+      #  time:
+      prefetch_images:
+        - "postgres:13-alpine"
+    volumes:
+      - name: dockersock
+        path: /var/run
 
   - name: rebuild-m2-cache
     image: plugins/s3-cache
@@ -52,15 +59,11 @@ steps:
     image: docker:17
     pull: if-not-exists
     environment:
-      DOCKER_HOST: tcp://localhost:2375
+      DOCKER_HOST: tcp://drone-docker.droneci.svc.cluster.local:2375
       DOCKER_TLS_CERTDIR: ""
-      TESTCONTAINERS_HOST_OVERRIDE: "localhost"
     when:
       branch:
         - master
-      event:
-        exclude:
-          - pull_request
     commands:
       - cd library
       - docker image build -f Dockerfile -t registry-http.registry.svc.cluster.local/library:${CI_COMMIT_SHA} .
@@ -87,11 +90,18 @@ steps:
       - kubectl set image deployment/library library=registry-http.registry.svc.cluster.local/library:${CI_COMMIT_SHA}
 
 services:
-  - name: docker-service
-    image: docker:23-dind
-    entrypoint:
-      - dockerd --registry-mirror http://registry-mirror-http.registry.svc.cluster.local --insecure-registry registry-http.registry.svc.cluster.local --insecure-registry registry-mirror-http.registry.svc.cluster.local -H tcp://0.0.0.0:2375
+  - name: docker
+    image: registry.mikhailov.net/dindwithopts:23
     privileged: true
+    environment:
+      DOCKER_OPTS: "--registry-mirror http://registry-mirror-http.registry.svc.cluster.local --insecure-registry registry-http.registry.svc.cluster.local --insecure-registry registry-mirror-http.registry.svc.cluster.local"
+    volumes:
+      - name: dockersock
+        path: /var/run
+
+volumes:
+  - name: dockersock
+    temp: {}
 
 trigger:
   event:
@@ -100,7 +110,7 @@ trigger:
 
 ---
 kind: pipeline
-type: kubernetes
+type: docker
 name: deploy
 
 steps:
