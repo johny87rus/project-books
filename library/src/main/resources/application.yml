@@ -28,5 +28,5 @@ spring:
           health-url: http://library.library.svc.cluster.local:8080/actuator/health
           service-url: https://api.library.mikhailov.net
   application:
-    name: library
+    name: library-api
 
