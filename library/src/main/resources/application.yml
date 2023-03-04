@@ -22,11 +22,11 @@ spring:
   boot:
     admin:
       client:
-        url: http://admin.spring-boot-admin:8080
+        url: http://admin.spring-boot-admin.svc.cluster.local:8080
         instance:
-          management-url: http://library.library:8080/actuator
-          health-url: http://library.library:8080/actuator/health
-          service-url: https://library.mikhailov.net
+          management-url: http://library.library.svc.cluster.local:8080/actuator
+          health-url: http://library.library.svc.cluster.local:8080/actuator/health
+          service-url: https://api.library.mikhailov.net
   application:
     name: library
 
