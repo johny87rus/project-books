@@ -94,7 +94,7 @@ services:
     image: registry.mikhailov.net/dindwithopts:23
     privileged: true
     environment:
-      DOCKER_OPTS: "--registry-mirror http://registry-mirror-http.registry.svc.cluster.local --insecure-registry registry-http.registry.svc.cluster.local --insecure-registry registry-mirror-http.registry.svc.cluster.local"
+      DOCKER_OPTS: "--registry-mirror http://registry-mirror-http.registry.svc.cluster.local --insecure-registry registry-http.registry.svc.cluster.local --insecure-registry registry-mirror-http.registry.svc.cluster.local --mtu 1400"
     volumes:
       - name: dockersock
         path: /var/run
