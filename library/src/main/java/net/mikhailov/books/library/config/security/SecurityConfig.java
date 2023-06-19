@@ -9,6 +9,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -31,16 +32,19 @@ public class SecurityConfig {
         authenticationManagerBuilder.authenticationProvider(authenticationProvider);
         http.authenticationManager(authenticationManagerBuilder.build());
 
-        http.httpBasic();
+        http.httpBasic(withDefaults());
         http.cors(withDefaults());
-        http.oauth2Login();
+        http.oauth2Login(withDefaults());
         //Временно отключил csrf
-        http.csrf().disable();
-        http.formLogin().and().logout().deleteCookies("JSESSIONID");
-        http.authorizeHttpRequests()
-                .requestMatchers(HttpMethod.POST, "/api/v1/**").hasRole(AuthorityType.ROLE_ADMIN.getRole())
-                .requestMatchers(HttpMethod.DELETE, "/api/v1/**").hasRole(AuthorityType.ROLE_ADMIN.getRole())
-                .anyRequest().permitAll();
+        http.csrf(AbstractHttpConfigurer::disable);
+        http.formLogin(withDefaults());
+        http.logout(httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer.deleteCookies("JSESSIONID"));
+        http.authorizeHttpRequests(authorizationManagerRequestMatcherRegistry -> {
+                    authorizationManagerRequestMatcherRegistry.requestMatchers(HttpMethod.POST, "/api/v1/**").hasRole(AuthorityType.ROLE_ADMIN.getRole());
+                    authorizationManagerRequestMatcherRegistry.requestMatchers(HttpMethod.DELETE, "/api/v1/**").hasRole(AuthorityType.ROLE_ADMIN.getRole());
+                    authorizationManagerRequestMatcherRegistry.anyRequest().permitAll();
+                }
+        );
         return http.build();
     }
 
