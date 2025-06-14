@@ -28,9 +28,9 @@ steps:
     settings:
       # This specifies the command that should be executed to perform build, test and
       #  integration tests. Not to be confused with Drone's `command`:
-      cmd: sleep 5 && mvn clean verify -Dmaven.repo.local=m2
+      cmd: sleep 20 && mvn clean verify -Dmaven.repo.local=m2
       # This image will run the cmd with your build steps
-      build_image: maven:3.8.6-openjdk-18
+      build_image: maven:3.9.9-amazoncorretto-21
       # Not mandatory; enables pre-fetching of images in parallel with the build, so may save
       #  time:
       prefetch_images:
@@ -70,7 +70,7 @@ steps:
       - docker push registry-http.registry.svc.cluster.local/library:${CI_COMMIT_SHA}
 
   - name: deploy
-    image: bitnami/kubectl:1.24
+    image: bitnami/kubectl:1.33.1
     pull: if-not-exists
     when:
       branch:
@@ -115,7 +115,7 @@ name: deploy
 
 steps:
   - name: deploy
-    image: bitnami/kubectl:1.24
+    image: bitnami/kubectl:1.33.1
     pull: if-not-exists
     when:
       branch:
